@@ -10,6 +10,7 @@ import (
 	"golang.org/x/xerrors"
 
 	"github.com/containerd/containerd/api/types/task"
+	"github.com/containerd/containerd/sandbox"
 	workspacev1 "github.com/gitpod-io/gitpod/ws-manager/api/crd/v1"
 )
 
@@ -57,6 +58,7 @@ type Runtime interface {
 	DisposeContainer(ctx context.Context, workspaceInstanceID string)
 
 	GetContainerTaskInfo(ctx context.Context, id ID) (*task.Process, error)
+	GetSandboxStatus(ctx context.Context, instanceId string) (*sandbox.ControllerStatus, error)
 
 	ForceKillContainerTask(ctx context.Context, id ID) error
 }

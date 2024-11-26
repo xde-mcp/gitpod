@@ -24,6 +24,7 @@ import (
 	"github.com/containerd/containerd/containers"
 	"github.com/containerd/containerd/errdefs"
 	"github.com/containerd/containerd/images"
+	"github.com/containerd/containerd/sandbox"
 	"github.com/containerd/platforms"
 	"github.com/containerd/typeurl/v2"
 	ocispecs "github.com/opencontainers/runtime-spec/specs-go"
@@ -575,6 +576,19 @@ func (s *Containerd) IsContainerdReady(ctx context.Context) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (s *Containerd) GetSandboxStatus(ctx context.Context, instanceId string) (*sandbox.ControllerStatus, error) {
+	info, ok := s.wsiIdx[instanceId]
+	if !ok || info.ID == "" {
+		return nil, fmt.Errorf("no SandboxID found")
+	}
+
+	resp, err := s.Client.SandboxController().Status(ctx, string(info.ID), true)
+	if err != nil {
+		return nil, fmt.Errorf("error retrieving sandbox status: %w", err)
+	}
+	return &resp, nil
 }
 
 func (s *Containerd) GetContainerTaskInfo(ctx context.Context, id ID) (*task.Process, error) {

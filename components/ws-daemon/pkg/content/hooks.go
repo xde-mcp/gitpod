@@ -48,7 +48,7 @@ func WorkspaceLifecycleHooks(cfg Config, workspaceCIDR string, uidmapper *iws.Ui
 			hookInstallQuota(xfs, true),
 		},
 		session.WorkspaceDisposed: {
-			hookWipingTeardown(), // if ws.DoWipe == true: make sure we 100% tear down the workspace
+			hookUnmount(),
 			iws.StopServingWorkspace,
 			hookRemoveQuota(xfs),
 		},
@@ -170,15 +170,17 @@ func hookRemoveQuota(xfs *quota.XFS) session.WorkspaceLivecycleHook {
 	}
 }
 
-func hookWipingTeardown() session.WorkspaceLivecycleHook {
+func hookUnmount() session.WorkspaceLivecycleHook {
 	return func(ctx context.Context, ws *session.Workspace) error {
 		log := log.WithFields(ws.OWI())
 
-		if !ws.DoWipe {
-			// this is the "default" case for 99% of all workspaces
-			// TODO(gpl): We should probably make this the default for all workspaces - but not with this PR
-			return nil
-		}
+		// if !ws.DoWipe {
+		// 	// this is the "default" case for 99% of all workspaces
+		// 	// TODO(gpl): We should probably make this the default for all workspaces - but not with this PR
+		// 	return nil
+		// }
+		doWipe := true
+		log.Info("unmount hook")
 
 		socketFN := filepath.Join(ws.ServiceLocDaemon, "daemon.sock")
 		conn, err := grpc.DialContext(ctx, "unix://"+socketFN, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -189,12 +191,12 @@ func hookWipingTeardown() session.WorkspaceLivecycleHook {
 		client := daemonapi.NewInWorkspaceServiceClient(conn)
 
 		res, err := client.WipingTeardown(ctx, &daemonapi.WipingTeardownRequest{
-			DoWipe: ws.DoWipe,
+			DoWipe: doWipe,
 		})
 		if err != nil {
 			return err
 		}
-		log.WithField("success", res.Success).Debug("wiping teardown done")
+		log.WithField("success", res.Success).Info("unmount hook done")
 
 		return nil
 	}

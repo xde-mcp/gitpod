@@ -6,6 +6,7 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -482,6 +483,7 @@ func (wsc *WorkspaceController) dumpWorkspaceContainerInfo(ctx context.Context, 
 	if err != nil {
 		return fmt.Errorf("failed to wait for container: %w", err)
 	}
+
 	task, err := wsc.runtime.GetContainerTaskInfo(ctx, id)
 	if err != nil {
 		return fmt.Errorf("failed to get container task info: %w", err)
@@ -493,6 +495,22 @@ func (wsc *WorkspaceController) dumpWorkspaceContainerInfo(ctx context.Context, 
 		"exitedAt":    task.ExitedAt.AsTime(),
 		"status":      task.Status.String(),
 	}).Info("container task info")
+
+	sandboxStatus, err := wsc.runtime.GetSandboxStatus(ctx, ws.Name)
+	if err != nil {
+		return fmt.Errorf("failed to get container sandbox status: %w", err)
+	}
+
+	infoJson, _ := json.Marshal(sandboxStatus.Info)
+	glog.WithFields(ws.OWI()).WithFields(logrus.Fields{
+		"sandboxID":  sandboxStatus.SandboxID,
+		"sandboxPid": sandboxStatus.Pid,
+		"createdAt":  sandboxStatus.CreatedAt.String(),
+		"exitedAt":   sandboxStatus.ExitedAt.String(),
+		"state":      sandboxStatus.State,
+		"extra":      string(sandboxStatus.Extra.GetValue()),
+		"info":       string(infoJson),
+	}).Info("container sandbox status")
 	return nil
 }
 

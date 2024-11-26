@@ -210,6 +210,11 @@ var ring1Cmd = &cobra.Command{
 		defer handleExit(&exitCode)
 
 		defer log.Info("ring1 stopped")
+		defer func() {
+			log.Info("ring1 going to sleep")
+			time.Sleep(5 * time.Minute)
+			log.Info("ring1 woke up again")
+		}()
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
