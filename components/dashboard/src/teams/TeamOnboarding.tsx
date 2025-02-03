@@ -166,7 +166,6 @@ export default function TeamOnboardingPage() {
                         Here's a preview of the welcome message that will be shown to your organization members:
                     </span>
                     <WelcomeMessagePreview
-                        welcomeMessage={settings?.onboardingSettings?.welcomeMessage?.message}
                         setWelcomeMessageEditorOpen={setWelcomeMessageEditorOpen}
                         disabled={!isOwner || updateTeamSettings.isLoading}
                     />
@@ -177,25 +176,23 @@ export default function TeamOnboardingPage() {
 }
 
 type WelcomeMessagePreviewProps = {
-    welcomeMessage: string | undefined;
     disabled?: boolean;
-    setWelcomeMessageEditorOpen: (open: boolean) => void;
+    setWelcomeMessageEditorOpen?: (open: boolean) => void;
 };
-const WelcomeMessagePreview = ({
-    welcomeMessage,
-    disabled,
-    setWelcomeMessageEditorOpen,
-}: WelcomeMessagePreviewProps) => {
+export const WelcomeMessagePreview = ({ disabled, setWelcomeMessageEditorOpen }: WelcomeMessagePreviewProps) => {
     const { data: settings } = useOrgSettingsQuery();
     const avatarUrl = settings?.onboardingSettings?.welcomeMessage?.featuredMemberResolvedAvatarUrl;
+    const welcomeMessage = settings?.onboardingSettings?.welcomeMessage?.message;
 
     return (
         <div className="max-w-2xl mx-auto">
             <div className="flex justify-between gap-2 items-center">
                 <Heading2 className="py-6">Welcome to Gitpod</Heading2>
-                <Button variant="secondary" onClick={() => setWelcomeMessageEditorOpen(true)} disabled={disabled}>
-                    Edit
-                </Button>
+                {setWelcomeMessageEditorOpen && (
+                    <Button variant="secondary" onClick={() => setWelcomeMessageEditorOpen(true)} disabled={disabled}>
+                        Edit
+                    </Button>
+                )}
             </div>
             <Subheading>{gitpodWelcomeSubheading}</Subheading>
             {/* todo: sanitize md */}

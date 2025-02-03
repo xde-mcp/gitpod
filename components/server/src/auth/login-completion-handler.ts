@@ -39,6 +39,7 @@ export class LoginCompletionHandler {
     ) {
         const logContext = LogContext.from({ user, request });
 
+        log.info("Login completion handler", { user, returnToUrl, authHost, elevateScopes });
         try {
             await new Promise<void>((resolve, reject) => {
                 request.login(user, (err) => {

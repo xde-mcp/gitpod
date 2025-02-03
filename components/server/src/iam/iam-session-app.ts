@@ -103,6 +103,7 @@ export class IamSessionApp {
 
         return {
             userId: user.id,
+            newUser: !existingUser,
         };
     }
 

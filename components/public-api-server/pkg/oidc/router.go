@@ -169,12 +169,15 @@ func (s *Service) getCallbackHandler() http.HandlerFunc {
 				return
 			}
 		} else {
-			cookies, _, err := s.createSession(r.Context(), result, config)
+			cookies, message, err := s.createSession(r.Context(), result, config)
 			if err != nil {
 				log.WithError(err).Warn("Failed to create session from downstream session provider.")
 				reportLoginCompleted("failed", "sso")
 				respondeWithError(rw, r, "We were unable to create a user session.", http.StatusInternalServerError, useHttpErrors)
 				return
+			}
+			if message.NewUser {
+				oauth2Result.ReturnToURL += "&newUser=true"
 			}
 			for _, cookie := range cookies {
 				http.SetCookie(rw, cookie)

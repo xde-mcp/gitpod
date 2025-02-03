@@ -8,7 +8,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -25,7 +24,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/oauth2"
@@ -277,20 +275,8 @@ func TestCreateSession(t *testing.T) {
 	_, message, err := service.createSession(context.Background(), &AuthFlowResult{}, &config)
 	require.NoError(t, err, "failed to create session")
 
-	got := map[string]interface{}{}
-	err = json.Unmarshal([]byte(message), &got)
-	require.NoError(t, err, "failed to parse response")
-
-	expected := map[string]interface{}{
-		"claims":             nil,
-		"idToken":            nil,
-		"oidcClientConfigId": config.ID,
-		"organizationId":     config.OrganizationID,
-	}
-
-	if diff := cmp.Diff(expected, got); diff != "" {
-		t.Errorf("Unexpected create session payload (-want +got):\n%s", diff)
-	}
+	require.True(t, message.NewUser, "expected new user")
+	require.Equal(t, message.UserID, "user-id", "expected user id")
 }
 
 func Test_validateRequiredClaims(t *testing.T) {
@@ -537,11 +523,13 @@ func newFakeSessionServer(t *testing.T) string {
 		})
 		w.WriteHeader(http.StatusOK)
 
-		// mirroring back the request body for testing
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			body = []byte(err.Error())
+		message := Message{
+			NewUser: true,
+			UserID:  "user-id",
 		}
+		body, err := json.Marshal(message)
+		require.NoError(t, err)
+
 		_, err = w.Write(body)
 		if err != nil {
 			log.Fatal(err)

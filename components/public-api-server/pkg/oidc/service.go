@@ -323,7 +323,12 @@ func (s *Service) authenticate(ctx context.Context, params authenticateParams) (
 	}, nil
 }
 
-func (s *Service) createSession(ctx context.Context, flowResult *AuthFlowResult, clientConfig *ClientConfig) ([]*http.Cookie, string, error) {
+type Message struct {
+	NewUser bool   `json:"newUser"`
+	UserID  string `json:"userId"`
+}
+
+func (s *Service) createSession(ctx context.Context, flowResult *AuthFlowResult, clientConfig *ClientConfig) ([]*http.Cookie, Message, error) {
 	type CreateSessionPayload struct {
 		AuthFlowResult
 		OrganizationID string `json:"organizationId"`
@@ -336,26 +341,30 @@ func (s *Service) createSession(ctx context.Context, flowResult *AuthFlowResult,
 	}
 	payload, err := json.Marshal(sessionPayload)
 	if err != nil {
-		return nil, "", err
+		return nil, Message{}, fmt.Errorf("failed to construct session request: %w", err)
 	}
 
 	url := fmt.Sprintf("http://%s/session", s.sessionServiceAddress)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(payload))
 	if err != nil {
-		return nil, "", fmt.Errorf("failed to construct session request: %w", err)
+		return nil, Message{}, fmt.Errorf("failed to construct session request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return nil, "", fmt.Errorf("failed to make request to /session endpoint: %w", err)
+		return nil, Message{}, fmt.Errorf("failed to make request to /session endpoint: %w", err)
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, "", err
+		return nil, Message{}, err
 	}
-	message := string(body)
+	message := Message{}
+	err = json.Unmarshal(body, &message)
+	if err != nil {
+		return nil, Message{}, err
+	}
 
 	if res.StatusCode == http.StatusOK {
 		return res.Cookies(), message, nil
