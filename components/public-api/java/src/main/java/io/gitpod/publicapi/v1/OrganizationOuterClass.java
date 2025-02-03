@@ -3638,7 +3638,16 @@ public final class OrganizationOuterClass {
        * message is the welcome message for the organization
        * </pre>
        *
-       * <code>string message = 2 [json_name = "message"];</code>
+       * <code>optional string message = 2 [json_name = "message"];</code>
+       * @return Whether the message field is set.
+       */
+      boolean hasMessage();
+      /**
+       * <pre>
+       * message is the welcome message for the organization
+       * </pre>
+       *
+       * <code>optional string message = 2 [json_name = "message"];</code>
        * @return The message.
        */
       java.lang.String getMessage();
@@ -3647,7 +3656,7 @@ public final class OrganizationOuterClass {
        * message is the welcome message for the organization
        * </pre>
        *
-       * <code>string message = 2 [json_name = "message"];</code>
+       * <code>optional string message = 2 [json_name = "message"];</code>
        * @return The bytes for message.
        */
       com.google.protobuf.ByteString
@@ -3655,30 +3664,19 @@ public final class OrganizationOuterClass {
 
       /**
        * <pre>
-       * footer is the footer message for the welcome message
+       * featured_member_id is the ID of the member to show in the welcome message
        * </pre>
        *
-       * <code>string footer = 3 [json_name = "footer"];</code>
-       * @return The footer.
+       * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+       * @return Whether the featuredMemberId field is set.
        */
-      java.lang.String getFooter();
-      /**
-       * <pre>
-       * footer is the footer message for the welcome message
-       * </pre>
-       *
-       * <code>string footer = 3 [json_name = "footer"];</code>
-       * @return The bytes for footer.
-       */
-      com.google.protobuf.ByteString
-          getFooterBytes();
-
+      boolean hasFeaturedMemberId();
       /**
        * <pre>
        * featured_member_id is the ID of the member to show in the welcome message
        * </pre>
        *
-       * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+       * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
        * @return The featuredMemberId.
        */
       java.lang.String getFeaturedMemberId();
@@ -3687,7 +3685,7 @@ public final class OrganizationOuterClass {
        * featured_member_id is the ID of the member to show in the welcome message
        * </pre>
        *
-       * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+       * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
        * @return The bytes for featuredMemberId.
        */
       com.google.protobuf.ByteString
@@ -3698,7 +3696,16 @@ public final class OrganizationOuterClass {
        * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
        * </pre>
        *
-       * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+       * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+       * @return Whether the featuredMemberResolvedAvatarUrl field is set.
+       */
+      boolean hasFeaturedMemberResolvedAvatarUrl();
+      /**
+       * <pre>
+       * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
+       * </pre>
+       *
+       * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
        * @return The featuredMemberResolvedAvatarUrl.
        */
       java.lang.String getFeaturedMemberResolvedAvatarUrl();
@@ -3707,7 +3714,7 @@ public final class OrganizationOuterClass {
        * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
        * </pre>
        *
-       * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+       * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
        * @return The bytes for featuredMemberResolvedAvatarUrl.
        */
       com.google.protobuf.ByteString
@@ -3736,7 +3743,6 @@ public final class OrganizationOuterClass {
       }
       private WelcomeMessage() {
         message_ = "";
-        footer_ = "";
         featuredMemberId_ = "";
         featuredMemberResolvedAvatarUrl_ = "";
       }
@@ -3754,6 +3760,7 @@ public final class OrganizationOuterClass {
                 io.gitpod.publicapi.v1.OrganizationOuterClass.OnboardingSettings.WelcomeMessage.class, io.gitpod.publicapi.v1.OrganizationOuterClass.OnboardingSettings.WelcomeMessage.Builder.class);
       }
 
+      private int bitField0_;
       public static final int ENABLED_FIELD_NUMBER = 1;
       private boolean enabled_ = false;
       /**
@@ -3777,7 +3784,19 @@ public final class OrganizationOuterClass {
        * message is the welcome message for the organization
        * </pre>
        *
-       * <code>string message = 2 [json_name = "message"];</code>
+       * <code>optional string message = 2 [json_name = "message"];</code>
+       * @return Whether the message field is set.
+       */
+      @java.lang.Override
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * message is the welcome message for the organization
+       * </pre>
+       *
+       * <code>optional string message = 2 [json_name = "message"];</code>
        * @return The message.
        */
       @java.lang.Override
@@ -3798,7 +3817,7 @@ public final class OrganizationOuterClass {
        * message is the welcome message for the organization
        * </pre>
        *
-       * <code>string message = 2 [json_name = "message"];</code>
+       * <code>optional string message = 2 [json_name = "message"];</code>
        * @return The bytes for message.
        */
       @java.lang.Override
@@ -3816,53 +3835,6 @@ public final class OrganizationOuterClass {
         }
       }
 
-      public static final int FOOTER_FIELD_NUMBER = 3;
-      @SuppressWarnings("serial")
-      private volatile java.lang.Object footer_ = "";
-      /**
-       * <pre>
-       * footer is the footer message for the welcome message
-       * </pre>
-       *
-       * <code>string footer = 3 [json_name = "footer"];</code>
-       * @return The footer.
-       */
-      @java.lang.Override
-      public java.lang.String getFooter() {
-        java.lang.Object ref = footer_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          footer_ = s;
-          return s;
-        }
-      }
-      /**
-       * <pre>
-       * footer is the footer message for the welcome message
-       * </pre>
-       *
-       * <code>string footer = 3 [json_name = "footer"];</code>
-       * @return The bytes for footer.
-       */
-      @java.lang.Override
-      public com.google.protobuf.ByteString
-          getFooterBytes() {
-        java.lang.Object ref = footer_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b =
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          footer_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
       public static final int FEATURED_MEMBER_ID_FIELD_NUMBER = 4;
       @SuppressWarnings("serial")
       private volatile java.lang.Object featuredMemberId_ = "";
@@ -3871,7 +3843,19 @@ public final class OrganizationOuterClass {
        * featured_member_id is the ID of the member to show in the welcome message
        * </pre>
        *
-       * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+       * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+       * @return Whether the featuredMemberId field is set.
+       */
+      @java.lang.Override
+      public boolean hasFeaturedMemberId() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * featured_member_id is the ID of the member to show in the welcome message
+       * </pre>
+       *
+       * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
        * @return The featuredMemberId.
        */
       @java.lang.Override
@@ -3892,7 +3876,7 @@ public final class OrganizationOuterClass {
        * featured_member_id is the ID of the member to show in the welcome message
        * </pre>
        *
-       * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+       * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
        * @return The bytes for featuredMemberId.
        */
       @java.lang.Override
@@ -3918,7 +3902,19 @@ public final class OrganizationOuterClass {
        * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
        * </pre>
        *
-       * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+       * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+       * @return Whether the featuredMemberResolvedAvatarUrl field is set.
+       */
+      @java.lang.Override
+      public boolean hasFeaturedMemberResolvedAvatarUrl() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
+       * </pre>
+       *
+       * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
        * @return The featuredMemberResolvedAvatarUrl.
        */
       @java.lang.Override
@@ -3939,7 +3935,7 @@ public final class OrganizationOuterClass {
        * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
        * </pre>
        *
-       * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+       * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
        * @return The bytes for featuredMemberResolvedAvatarUrl.
        */
       @java.lang.Override
@@ -3974,16 +3970,13 @@ public final class OrganizationOuterClass {
         if (enabled_ != false) {
           output.writeBool(1, enabled_);
         }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(message_)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           com.google.protobuf.GeneratedMessage.writeString(output, 2, message_);
         }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(footer_)) {
-          com.google.protobuf.GeneratedMessage.writeString(output, 3, footer_);
-        }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(featuredMemberId_)) {
+        if (((bitField0_ & 0x00000002) != 0)) {
           com.google.protobuf.GeneratedMessage.writeString(output, 4, featuredMemberId_);
         }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(featuredMemberResolvedAvatarUrl_)) {
+        if (((bitField0_ & 0x00000004) != 0)) {
           com.google.protobuf.GeneratedMessage.writeString(output, 5, featuredMemberResolvedAvatarUrl_);
         }
         getUnknownFields().writeTo(output);
@@ -3999,16 +3992,13 @@ public final class OrganizationOuterClass {
           size += com.google.protobuf.CodedOutputStream
             .computeBoolSize(1, enabled_);
         }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(message_)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           size += com.google.protobuf.GeneratedMessage.computeStringSize(2, message_);
         }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(footer_)) {
-          size += com.google.protobuf.GeneratedMessage.computeStringSize(3, footer_);
-        }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(featuredMemberId_)) {
+        if (((bitField0_ & 0x00000002) != 0)) {
           size += com.google.protobuf.GeneratedMessage.computeStringSize(4, featuredMemberId_);
         }
-        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(featuredMemberResolvedAvatarUrl_)) {
+        if (((bitField0_ & 0x00000004) != 0)) {
           size += com.google.protobuf.GeneratedMessage.computeStringSize(5, featuredMemberResolvedAvatarUrl_);
         }
         size += getUnknownFields().getSerializedSize();
@@ -4028,14 +4018,21 @@ public final class OrganizationOuterClass {
 
         if (getEnabled()
             != other.getEnabled()) return false;
-        if (!getMessage()
-            .equals(other.getMessage())) return false;
-        if (!getFooter()
-            .equals(other.getFooter())) return false;
-        if (!getFeaturedMemberId()
-            .equals(other.getFeaturedMemberId())) return false;
-        if (!getFeaturedMemberResolvedAvatarUrl()
-            .equals(other.getFeaturedMemberResolvedAvatarUrl())) return false;
+        if (hasMessage() != other.hasMessage()) return false;
+        if (hasMessage()) {
+          if (!getMessage()
+              .equals(other.getMessage())) return false;
+        }
+        if (hasFeaturedMemberId() != other.hasFeaturedMemberId()) return false;
+        if (hasFeaturedMemberId()) {
+          if (!getFeaturedMemberId()
+              .equals(other.getFeaturedMemberId())) return false;
+        }
+        if (hasFeaturedMemberResolvedAvatarUrl() != other.hasFeaturedMemberResolvedAvatarUrl()) return false;
+        if (hasFeaturedMemberResolvedAvatarUrl()) {
+          if (!getFeaturedMemberResolvedAvatarUrl()
+              .equals(other.getFeaturedMemberResolvedAvatarUrl())) return false;
+        }
         if (!getUnknownFields().equals(other.getUnknownFields())) return false;
         return true;
       }
@@ -4050,14 +4047,18 @@ public final class OrganizationOuterClass {
         hash = (37 * hash) + ENABLED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getEnabled());
-        hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
-        hash = (53 * hash) + getMessage().hashCode();
-        hash = (37 * hash) + FOOTER_FIELD_NUMBER;
-        hash = (53 * hash) + getFooter().hashCode();
-        hash = (37 * hash) + FEATURED_MEMBER_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getFeaturedMemberId().hashCode();
-        hash = (37 * hash) + FEATURED_MEMBER_RESOLVED_AVATAR_URL_FIELD_NUMBER;
-        hash = (53 * hash) + getFeaturedMemberResolvedAvatarUrl().hashCode();
+        if (hasMessage()) {
+          hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+          hash = (53 * hash) + getMessage().hashCode();
+        }
+        if (hasFeaturedMemberId()) {
+          hash = (37 * hash) + FEATURED_MEMBER_ID_FIELD_NUMBER;
+          hash = (53 * hash) + getFeaturedMemberId().hashCode();
+        }
+        if (hasFeaturedMemberResolvedAvatarUrl()) {
+          hash = (37 * hash) + FEATURED_MEMBER_RESOLVED_AVATAR_URL_FIELD_NUMBER;
+          hash = (53 * hash) + getFeaturedMemberResolvedAvatarUrl().hashCode();
+        }
         hash = (29 * hash) + getUnknownFields().hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -4191,7 +4192,6 @@ public final class OrganizationOuterClass {
           bitField0_ = 0;
           enabled_ = false;
           message_ = "";
-          footer_ = "";
           featuredMemberId_ = "";
           featuredMemberResolvedAvatarUrl_ = "";
           return this;
@@ -4230,18 +4230,20 @@ public final class OrganizationOuterClass {
           if (((from_bitField0_ & 0x00000001) != 0)) {
             result.enabled_ = enabled_;
           }
+          int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000002) != 0)) {
             result.message_ = message_;
+            to_bitField0_ |= 0x00000001;
           }
           if (((from_bitField0_ & 0x00000004) != 0)) {
-            result.footer_ = footer_;
+            result.featuredMemberId_ = featuredMemberId_;
+            to_bitField0_ |= 0x00000002;
           }
           if (((from_bitField0_ & 0x00000008) != 0)) {
-            result.featuredMemberId_ = featuredMemberId_;
-          }
-          if (((from_bitField0_ & 0x00000010) != 0)) {
             result.featuredMemberResolvedAvatarUrl_ = featuredMemberResolvedAvatarUrl_;
+            to_bitField0_ |= 0x00000004;
           }
+          result.bitField0_ |= to_bitField0_;
         }
 
         @java.lang.Override
@@ -4259,24 +4261,19 @@ public final class OrganizationOuterClass {
           if (other.getEnabled() != false) {
             setEnabled(other.getEnabled());
           }
-          if (!other.getMessage().isEmpty()) {
+          if (other.hasMessage()) {
             message_ = other.message_;
             bitField0_ |= 0x00000002;
             onChanged();
           }
-          if (!other.getFooter().isEmpty()) {
-            footer_ = other.footer_;
+          if (other.hasFeaturedMemberId()) {
+            featuredMemberId_ = other.featuredMemberId_;
             bitField0_ |= 0x00000004;
             onChanged();
           }
-          if (!other.getFeaturedMemberId().isEmpty()) {
-            featuredMemberId_ = other.featuredMemberId_;
-            bitField0_ |= 0x00000008;
-            onChanged();
-          }
-          if (!other.getFeaturedMemberResolvedAvatarUrl().isEmpty()) {
+          if (other.hasFeaturedMemberResolvedAvatarUrl()) {
             featuredMemberResolvedAvatarUrl_ = other.featuredMemberResolvedAvatarUrl_;
-            bitField0_ |= 0x00000010;
+            bitField0_ |= 0x00000008;
             onChanged();
           }
           this.mergeUnknownFields(other.getUnknownFields());
@@ -4315,19 +4312,14 @@ public final class OrganizationOuterClass {
                   bitField0_ |= 0x00000002;
                   break;
                 } // case 18
-                case 26: {
-                  footer_ = input.readStringRequireUtf8();
-                  bitField0_ |= 0x00000004;
-                  break;
-                } // case 26
                 case 34: {
                   featuredMemberId_ = input.readStringRequireUtf8();
-                  bitField0_ |= 0x00000008;
+                  bitField0_ |= 0x00000004;
                   break;
                 } // case 34
                 case 42: {
                   featuredMemberResolvedAvatarUrl_ = input.readStringRequireUtf8();
-                  bitField0_ |= 0x00000010;
+                  bitField0_ |= 0x00000008;
                   break;
                 } // case 42
                 default: {
@@ -4397,7 +4389,18 @@ public final class OrganizationOuterClass {
          * message is the welcome message for the organization
          * </pre>
          *
-         * <code>string message = 2 [json_name = "message"];</code>
+         * <code>optional string message = 2 [json_name = "message"];</code>
+         * @return Whether the message field is set.
+         */
+        public boolean hasMessage() {
+          return ((bitField0_ & 0x00000002) != 0);
+        }
+        /**
+         * <pre>
+         * message is the welcome message for the organization
+         * </pre>
+         *
+         * <code>optional string message = 2 [json_name = "message"];</code>
          * @return The message.
          */
         public java.lang.String getMessage() {
@@ -4417,7 +4420,7 @@ public final class OrganizationOuterClass {
          * message is the welcome message for the organization
          * </pre>
          *
-         * <code>string message = 2 [json_name = "message"];</code>
+         * <code>optional string message = 2 [json_name = "message"];</code>
          * @return The bytes for message.
          */
         public com.google.protobuf.ByteString
@@ -4438,7 +4441,7 @@ public final class OrganizationOuterClass {
          * message is the welcome message for the organization
          * </pre>
          *
-         * <code>string message = 2 [json_name = "message"];</code>
+         * <code>optional string message = 2 [json_name = "message"];</code>
          * @param value The message to set.
          * @return This builder for chaining.
          */
@@ -4455,7 +4458,7 @@ public final class OrganizationOuterClass {
          * message is the welcome message for the organization
          * </pre>
          *
-         * <code>string message = 2 [json_name = "message"];</code>
+         * <code>optional string message = 2 [json_name = "message"];</code>
          * @return This builder for chaining.
          */
         public Builder clearMessage() {
@@ -4469,7 +4472,7 @@ public final class OrganizationOuterClass {
          * message is the welcome message for the organization
          * </pre>
          *
-         * <code>string message = 2 [json_name = "message"];</code>
+         * <code>optional string message = 2 [json_name = "message"];</code>
          * @param value The bytes for message to set.
          * @return This builder for chaining.
          */
@@ -4483,105 +4486,24 @@ public final class OrganizationOuterClass {
           return this;
         }
 
-        private java.lang.Object footer_ = "";
-        /**
-         * <pre>
-         * footer is the footer message for the welcome message
-         * </pre>
-         *
-         * <code>string footer = 3 [json_name = "footer"];</code>
-         * @return The footer.
-         */
-        public java.lang.String getFooter() {
-          java.lang.Object ref = footer_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            footer_ = s;
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <pre>
-         * footer is the footer message for the welcome message
-         * </pre>
-         *
-         * <code>string footer = 3 [json_name = "footer"];</code>
-         * @return The bytes for footer.
-         */
-        public com.google.protobuf.ByteString
-            getFooterBytes() {
-          java.lang.Object ref = footer_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b =
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            footer_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <pre>
-         * footer is the footer message for the welcome message
-         * </pre>
-         *
-         * <code>string footer = 3 [json_name = "footer"];</code>
-         * @param value The footer to set.
-         * @return This builder for chaining.
-         */
-        public Builder setFooter(
-            java.lang.String value) {
-          if (value == null) { throw new NullPointerException(); }
-          footer_ = value;
-          bitField0_ |= 0x00000004;
-          onChanged();
-          return this;
-        }
-        /**
-         * <pre>
-         * footer is the footer message for the welcome message
-         * </pre>
-         *
-         * <code>string footer = 3 [json_name = "footer"];</code>
-         * @return This builder for chaining.
-         */
-        public Builder clearFooter() {
-          footer_ = getDefaultInstance().getFooter();
-          bitField0_ = (bitField0_ & ~0x00000004);
-          onChanged();
-          return this;
-        }
-        /**
-         * <pre>
-         * footer is the footer message for the welcome message
-         * </pre>
-         *
-         * <code>string footer = 3 [json_name = "footer"];</code>
-         * @param value The bytes for footer to set.
-         * @return This builder for chaining.
-         */
-        public Builder setFooterBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) { throw new NullPointerException(); }
-          checkByteStringIsUtf8(value);
-          footer_ = value;
-          bitField0_ |= 0x00000004;
-          onChanged();
-          return this;
-        }
-
         private java.lang.Object featuredMemberId_ = "";
         /**
          * <pre>
          * featured_member_id is the ID of the member to show in the welcome message
          * </pre>
          *
-         * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+         * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+         * @return Whether the featuredMemberId field is set.
+         */
+        public boolean hasFeaturedMemberId() {
+          return ((bitField0_ & 0x00000004) != 0);
+        }
+        /**
+         * <pre>
+         * featured_member_id is the ID of the member to show in the welcome message
+         * </pre>
+         *
+         * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
          * @return The featuredMemberId.
          */
         public java.lang.String getFeaturedMemberId() {
@@ -4601,7 +4523,7 @@ public final class OrganizationOuterClass {
          * featured_member_id is the ID of the member to show in the welcome message
          * </pre>
          *
-         * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+         * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
          * @return The bytes for featuredMemberId.
          */
         public com.google.protobuf.ByteString
@@ -4622,7 +4544,7 @@ public final class OrganizationOuterClass {
          * featured_member_id is the ID of the member to show in the welcome message
          * </pre>
          *
-         * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+         * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
          * @param value The featuredMemberId to set.
          * @return This builder for chaining.
          */
@@ -4630,7 +4552,7 @@ public final class OrganizationOuterClass {
             java.lang.String value) {
           if (value == null) { throw new NullPointerException(); }
           featuredMemberId_ = value;
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000004;
           onChanged();
           return this;
         }
@@ -4639,12 +4561,12 @@ public final class OrganizationOuterClass {
          * featured_member_id is the ID of the member to show in the welcome message
          * </pre>
          *
-         * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+         * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
          * @return This builder for chaining.
          */
         public Builder clearFeaturedMemberId() {
           featuredMemberId_ = getDefaultInstance().getFeaturedMemberId();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
           return this;
         }
@@ -4653,7 +4575,7 @@ public final class OrganizationOuterClass {
          * featured_member_id is the ID of the member to show in the welcome message
          * </pre>
          *
-         * <code>string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
+         * <code>optional string featured_member_id = 4 [json_name = "featuredMemberId"];</code>
          * @param value The bytes for featuredMemberId to set.
          * @return This builder for chaining.
          */
@@ -4662,7 +4584,7 @@ public final class OrganizationOuterClass {
           if (value == null) { throw new NullPointerException(); }
           checkByteStringIsUtf8(value);
           featuredMemberId_ = value;
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000004;
           onChanged();
           return this;
         }
@@ -4673,7 +4595,18 @@ public final class OrganizationOuterClass {
          * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
          * </pre>
          *
-         * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+         * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+         * @return Whether the featuredMemberResolvedAvatarUrl field is set.
+         */
+        public boolean hasFeaturedMemberResolvedAvatarUrl() {
+          return ((bitField0_ & 0x00000008) != 0);
+        }
+        /**
+         * <pre>
+         * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
+         * </pre>
+         *
+         * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
          * @return The featuredMemberResolvedAvatarUrl.
          */
         public java.lang.String getFeaturedMemberResolvedAvatarUrl() {
@@ -4693,7 +4626,7 @@ public final class OrganizationOuterClass {
          * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
          * </pre>
          *
-         * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+         * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
          * @return The bytes for featuredMemberResolvedAvatarUrl.
          */
         public com.google.protobuf.ByteString
@@ -4714,7 +4647,7 @@ public final class OrganizationOuterClass {
          * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
          * </pre>
          *
-         * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+         * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
          * @param value The featuredMemberResolvedAvatarUrl to set.
          * @return This builder for chaining.
          */
@@ -4722,7 +4655,7 @@ public final class OrganizationOuterClass {
             java.lang.String value) {
           if (value == null) { throw new NullPointerException(); }
           featuredMemberResolvedAvatarUrl_ = value;
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000008;
           onChanged();
           return this;
         }
@@ -4731,12 +4664,12 @@ public final class OrganizationOuterClass {
          * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
          * </pre>
          *
-         * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+         * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
          * @return This builder for chaining.
          */
         public Builder clearFeaturedMemberResolvedAvatarUrl() {
           featuredMemberResolvedAvatarUrl_ = getDefaultInstance().getFeaturedMemberResolvedAvatarUrl();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
           return this;
         }
@@ -4745,7 +4678,7 @@ public final class OrganizationOuterClass {
          * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
          * </pre>
          *
-         * <code>string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
+         * <code>optional string featured_member_resolved_avatar_url = 5 [json_name = "featuredMemberResolvedAvatarUrl"];</code>
          * @param value The bytes for featuredMemberResolvedAvatarUrl to set.
          * @return This builder for chaining.
          */
@@ -4754,7 +4687,7 @@ public final class OrganizationOuterClass {
           if (value == null) { throw new NullPointerException(); }
           checkByteStringIsUtf8(value);
           featuredMemberResolvedAvatarUrl_ = value;
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000008;
           onChanged();
           return this;
         }
@@ -30585,194 +30518,196 @@ java.lang.String defaultValue) {
       "leRestrictionEntry\022/\n\004role\030\001 \001(\0162\033.gitpo" +
       "d.v1.OrganizationRoleR\004role\022C\n\013permissio" +
       "ns\030\002 \003(\0162!.gitpod.v1.OrganizationPermiss" +
-      "ionR\013permissions\"\233\003\n\022OnboardingSettings\022" +
+      "ionR\013permissions\"\335\003\n\022OnboardingSettings\022" +
       "(\n\rinternal_link\030\001 \001(\tH\000R\014internalLink\210\001" +
       "\001\022Z\n\017welcome_message\030\003 \001(\0132,.gitpod.v1.O" +
       "nboardingSettings.WelcomeMessageH\001R\016welc" +
-      "omeMessage\210\001\001\032\330\001\n\016WelcomeMessage\022\030\n\007enab" +
-      "led\030\001 \001(\010R\007enabled\022\030\n\007message\030\002 \001(\tR\007mes" +
-      "sage\022\026\n\006footer\030\003 \001(\tR\006footer\022,\n\022featured" +
-      "_member_id\030\004 \001(\tR\020featuredMemberId\022L\n#fe" +
-      "atured_member_resolved_avatar_url\030\005 \001(\tR" +
-      "\037featuredMemberResolvedAvatarUrlB\020\n\016_int" +
-      "ernal_linkB\022\n\020_welcome_message\"\273\006\n\024Organ" +
-      "izationSettings\022<\n\032workspace_sharing_dis" +
-      "abled\030\001 \001(\010R\030workspaceSharingDisabled\0226\n" +
-      "\027default_workspace_image\030\002 \001(\tR\025defaultW" +
-      "orkspaceImage\022:\n\031allowed_workspace_class" +
-      "es\030\003 \003(\tR\027allowedWorkspaceClasses\0226\n\027res" +
-      "tricted_editor_names\030\004 \003(\tR\025restrictedEd" +
-      "itorNames\022o\n\026pinned_editor_versions\030\005 \003(" +
-      "\01329.gitpod.v1.OrganizationSettings.Pinne" +
-      "dEditorVersionsEntryR\024pinnedEditorVersio" +
-      "ns\022!\n\014default_role\030\006 \001(\tR\013defaultRole\022E\n" +
-      "\020timeout_settings\030\007 \001(\0132\032.gitpod.v1.Time" +
-      "outSettingsR\017timeoutSettings\022L\n\021role_res" +
-      "trictions\030\010 \003(\0132\037.gitpod.v1.RoleRestrict" +
-      "ionEntryR\020roleRestrictions\022E\n\037max_parall" +
-      "el_running_workspaces\030\t \001(\005R\034maxParallel" +
-      "RunningWorkspaces\022N\n\023onboarding_settings" +
-      "\030\n \001(\0132\035.gitpod.v1.OnboardingSettingsR\022o" +
-      "nboardingSettings\0220\n\024annotate_git_commit" +
-      "s\030\013 \001(\010R\022annotateGitCommits\032G\n\031PinnedEdi" +
-      "torVersionsEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005va" +
-      "lue\030\002 \001(\tR\005value:\0028\001\"\220\001\n\'ListOrganizatio" +
-      "nWorkspaceClassesRequest\022<\n\npagination\030\001" +
-      " \001(\0132\034.gitpod.v1.PaginationRequestR\npagi" +
-      "nation\022\'\n\017organization_id\030\002 \001(\tR\016organiz" +
-      "ationId\"\261\001\n(ListOrganizationWorkspaceCla" +
-      "ssesResponse\022=\n\npagination\030\001 \001(\0132\035.gitpo" +
-      "d.v1.PaginationResponseR\npagination\022F\n\021w" +
-      "orkspace_classes\030\002 \003(\0132\031.gitpod.v1.Works" +
-      "paceClassR\020workspaceClasses\"f\n\031UpdateOrg" +
-      "anizationRequest\022\'\n\017organization_id\030\001 \001(" +
-      "\tR\016organizationId\022\027\n\004name\030\002 \001(\tH\000R\004name\210" +
-      "\001\001B\007\n\005_name\"Y\n\032UpdateOrganizationRespons" +
-      "e\022;\n\014organization\030\001 \001(\0132\027.gitpod.v1.Orga" +
-      "nizationR\014organization\"\252\001\n\017TimeoutSettin" +
-      "gs\022>\n\ninactivity\030\001 \001(\0132\031.google.protobuf" +
-      ".DurationH\000R\ninactivity\210\001\001\0221\n\022deny_user_" +
-      "timeouts\030\002 \001(\010H\001R\020denyUserTimeouts\210\001\001B\r\n" +
-      "\013_inactivityB\025\n\023_deny_user_timeouts\"\212\013\n!" +
-      "UpdateOrganizationSettingsRequest\022\'\n\017org" +
-      "anization_id\030\001 \001(\tR\016organizationId\022A\n\032wo" +
-      "rkspace_sharing_disabled\030\003 \001(\010H\000R\030worksp" +
-      "aceSharingDisabled\210\001\001\022;\n\027default_workspa" +
-      "ce_image\030\004 \001(\tH\001R\025defaultWorkspaceImage\210" +
-      "\001\001\022:\n\031allowed_workspace_classes\030\005 \003(\tR\027a" +
-      "llowedWorkspaceClasses\0226\n\027restricted_edi" +
-      "tor_names\030\006 \003(\tR\025restrictedEditorNames\022H" +
-      "\n\036update_restricted_editor_names\030\007 \001(\010H\002" +
-      "R\033updateRestrictedEditorNames\210\001\001\022|\n\026pinn" +
-      "ed_editor_versions\030\010 \003(\0132F.gitpod.v1.Upd" +
-      "ateOrganizationSettingsRequest.PinnedEdi" +
-      "torVersionsEntryR\024pinnedEditorVersions\022F" +
-      "\n\035update_pinned_editor_versions\030\t \001(\010H\003R" +
-      "\032updatePinnedEditorVersions\210\001\001\022&\n\014defaul" +
-      "t_role\030\n \001(\tH\004R\013defaultRole\210\001\001\022J\n\020timeou" +
-      "t_settings\030\013 \001(\0132\032.gitpod.v1.TimeoutSett" +
-      "ingsH\005R\017timeoutSettings\210\001\001\022L\n\021role_restr" +
-      "ictions\030\014 \003(\0132\037.gitpod.v1.RoleRestrictio" +
-      "nEntryR\020roleRestrictions\022=\n\030update_role_" +
-      "restrictions\030\r \001(\010H\006R\026updateRoleRestrict" +
-      "ions\210\001\001\022J\n\037max_parallel_running_workspac" +
-      "es\030\017 \001(\005H\007R\034maxParallelRunningWorkspaces" +
-      "\210\001\001\022S\n\023onboarding_settings\030\020 \001(\0132\035.gitpo" +
-      "d.v1.OnboardingSettingsH\010R\022onboardingSet" +
-      "tings\210\001\001\0225\n\024annotate_git_commits\030\021 \001(\010H\t" +
-      "R\022annotateGitCommits\210\001\001\032G\n\031PinnedEditorV" +
-      "ersionsEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030" +
-      "\002 \001(\tR\005value:\0028\001B\035\n\033_workspace_sharing_d" +
-      "isabledB\032\n\030_default_workspace_imageB!\n\037_" +
-      "update_restricted_editor_namesB \n\036_updat" +
-      "e_pinned_editor_versionsB\017\n\r_default_rol" +
-      "eB\023\n\021_timeout_settingsB\033\n\031_update_role_r" +
-      "estrictionsB\"\n _max_parallel_running_wor" +
-      "kspacesB\026\n\024_onboarding_settingsB\027\n\025_anno" +
-      "tate_git_commits\"a\n\"UpdateOrganizationSe" +
-      "ttingsResponse\022;\n\010settings\030\001 \001(\0132\037.gitpo" +
-      "d.v1.OrganizationSettingsR\010settings\"I\n\036G" +
-      "etOrganizationSettingsRequest\022\'\n\017organiz" +
-      "ation_id\030\001 \001(\tR\016organizationId\"^\n\037GetOrg" +
-      "anizationSettingsResponse\022;\n\010settings\030\001 " +
-      "\001(\0132\037.gitpod.v1.OrganizationSettingsR\010se" +
-      "ttings\"/\n\031CreateOrganizationRequest\022\022\n\004n" +
-      "ame\030\001 \001(\tR\004name\"Y\n\032CreateOrganizationRes" +
-      "ponse\022;\n\014organization\030\001 \001(\0132\027.gitpod.v1." +
-      "OrganizationR\014organization\"A\n\026GetOrganiz" +
-      "ationRequest\022\'\n\017organization_id\030\001 \001(\tR\016o" +
-      "rganizationId\"V\n\027GetOrganizationResponse" +
-      "\022;\n\014organization\030\001 \001(\0132\027.gitpod.v1.Organ" +
-      "izationR\014organization\"\332\001\n\030ListOrganizati" +
-      "onsRequest\022<\n\npagination\030\001 \001(\0132\034.gitpod." +
-      "v1.PaginationRequestR\npagination\022?\n\005scop" +
-      "e\030\002 \001(\0162).gitpod.v1.ListOrganizationsReq" +
-      "uest.ScopeR\005scope\"?\n\005Scope\022\025\n\021SCOPE_UNSP" +
-      "ECIFIED\020\000\022\020\n\014SCOPE_MEMBER\020\001\022\r\n\tSCOPE_ALL" +
-      "\020\002\"\231\001\n\031ListOrganizationsResponse\022=\n\rorga" +
-      "nizations\030\001 \003(\0132\027.gitpod.v1.Organization" +
-      "R\rorganizations\022=\n\npagination\030\002 \001(\0132\035.gi" +
-      "tpod.v1.PaginationResponseR\npagination\"D" +
-      "\n\031DeleteOrganizationRequest\022\'\n\017organizat" +
-      "ion_id\030\001 \001(\tR\016organizationId\"\034\n\032DeleteOr" +
-      "ganizationResponse\"K\n GetOrganizationInv" +
-      "itationRequest\022\'\n\017organization_id\030\001 \001(\tR" +
-      "\016organizationId\"H\n!GetOrganizationInvita" +
-      "tionResponse\022#\n\rinvitation_id\030\001 \001(\tR\014inv" +
-      "itationId\">\n\027JoinOrganizationRequest\022#\n\r" +
-      "invitation_id\030\001 \001(\tR\014invitationId\"C\n\030Joi" +
-      "nOrganizationResponse\022\'\n\017organization_id" +
-      "\030\001 \001(\tR\016organizationId\"M\n\"ResetOrganizat" +
-      "ionInvitationRequest\022\'\n\017organization_id\030" +
-      "\001 \001(\tR\016organizationId\"J\n#ResetOrganizati" +
-      "onInvitationResponse\022#\n\rinvitation_id\030\001 " +
-      "\001(\tR\014invitationId\"\207\001\n\036ListOrganizationMe" +
-      "mbersRequest\022\'\n\017organization_id\030\001 \001(\tR\016o" +
-      "rganizationId\022<\n\npagination\030\002 \001(\0132\034.gitp" +
-      "od.v1.PaginationRequestR\npagination\"\231\001\n\037" +
-      "ListOrganizationMembersResponse\0227\n\007membe" +
-      "rs\030\001 \003(\0132\035.gitpod.v1.OrganizationMemberR" +
-      "\007members\022=\n\npagination\030\002 \001(\0132\035.gitpod.v1" +
-      ".PaginationResponseR\npagination\"\242\001\n\037Upda" +
-      "teOrganizationMemberRequest\022\'\n\017organizat" +
-      "ion_id\030\001 \001(\tR\016organizationId\022\027\n\007user_id\030" +
-      "\002 \001(\tR\006userId\0224\n\004role\030\003 \001(\0162\033.gitpod.v1." +
-      "OrganizationRoleH\000R\004role\210\001\001B\007\n\005_role\"Y\n " +
-      "UpdateOrganizationMemberResponse\0225\n\006memb" +
-      "er\030\001 \001(\0132\035.gitpod.v1.OrganizationMemberR" +
-      "\006member\"c\n\037DeleteOrganizationMemberReque" +
+      "omeMessage\210\001\001\032\232\002\n\016WelcomeMessage\022\030\n\007enab" +
+      "led\030\001 \001(\010R\007enabled\022\035\n\007message\030\002 \001(\tH\000R\007m" +
+      "essage\210\001\001\0221\n\022featured_member_id\030\004 \001(\tH\001R" +
+      "\020featuredMemberId\210\001\001\022Q\n#featured_member_" +
+      "resolved_avatar_url\030\005 \001(\tH\002R\037featuredMem" +
+      "berResolvedAvatarUrl\210\001\001B\n\n\010_messageB\025\n\023_" +
+      "featured_member_idB&\n$_featured_member_r" +
+      "esolved_avatar_urlB\020\n\016_internal_linkB\022\n\020" +
+      "_welcome_message\"\273\006\n\024OrganizationSetting" +
+      "s\022<\n\032workspace_sharing_disabled\030\001 \001(\010R\030w" +
+      "orkspaceSharingDisabled\0226\n\027default_works" +
+      "pace_image\030\002 \001(\tR\025defaultWorkspaceImage\022" +
+      ":\n\031allowed_workspace_classes\030\003 \003(\tR\027allo" +
+      "wedWorkspaceClasses\0226\n\027restricted_editor" +
+      "_names\030\004 \003(\tR\025restrictedEditorNames\022o\n\026p" +
+      "inned_editor_versions\030\005 \003(\01329.gitpod.v1." +
+      "OrganizationSettings.PinnedEditorVersion" +
+      "sEntryR\024pinnedEditorVersions\022!\n\014default_" +
+      "role\030\006 \001(\tR\013defaultRole\022E\n\020timeout_setti" +
+      "ngs\030\007 \001(\0132\032.gitpod.v1.TimeoutSettingsR\017t" +
+      "imeoutSettings\022L\n\021role_restrictions\030\010 \003(" +
+      "\0132\037.gitpod.v1.RoleRestrictionEntryR\020role" +
+      "Restrictions\022E\n\037max_parallel_running_wor" +
+      "kspaces\030\t \001(\005R\034maxParallelRunningWorkspa" +
+      "ces\022N\n\023onboarding_settings\030\n \001(\0132\035.gitpo" +
+      "d.v1.OnboardingSettingsR\022onboardingSetti" +
+      "ngs\0220\n\024annotate_git_commits\030\013 \001(\010R\022annot" +
+      "ateGitCommits\032G\n\031PinnedEditorVersionsEnt" +
+      "ry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005val" +
+      "ue:\0028\001\"\220\001\n\'ListOrganizationWorkspaceClas" +
+      "sesRequest\022<\n\npagination\030\001 \001(\0132\034.gitpod." +
+      "v1.PaginationRequestR\npagination\022\'\n\017orga" +
+      "nization_id\030\002 \001(\tR\016organizationId\"\261\001\n(Li" +
+      "stOrganizationWorkspaceClassesResponse\022=" +
+      "\n\npagination\030\001 \001(\0132\035.gitpod.v1.Paginatio" +
+      "nResponseR\npagination\022F\n\021workspace_class" +
+      "es\030\002 \003(\0132\031.gitpod.v1.WorkspaceClassR\020wor" +
+      "kspaceClasses\"f\n\031UpdateOrganizationReque" +
       "st\022\'\n\017organization_id\030\001 \001(\tR\016organizatio" +
-      "nId\022\027\n\007user_id\030\002 \001(\tR\006userId\"\"\n DeleteOr" +
-      "ganizationMemberResponse*\224\001\n\020Organizatio" +
-      "nRole\022!\n\035ORGANIZATION_ROLE_UNSPECIFIED\020\000" +
-      "\022\033\n\027ORGANIZATION_ROLE_OWNER\020\001\022\034\n\030ORGANIZ" +
-      "ATION_ROLE_MEMBER\020\002\022\"\n\036ORGANIZATION_ROLE" +
-      "_COLLABORATOR\020\003*t\n\026OrganizationPermissio" +
-      "n\022\'\n#ORGANIZATION_PERMISSION_UNSPECIFIED" +
-      "\020\000\0221\n-ORGANIZATION_PERMISSION_START_ARBI" +
-      "TRARY_REPOS\020\0012\276\014\n\023OrganizationService\022c\n" +
-      "\022CreateOrganization\022$.gitpod.v1.CreateOr" +
-      "ganizationRequest\032%.gitpod.v1.CreateOrga" +
-      "nizationResponse\"\000\022Z\n\017GetOrganization\022!." +
-      "gitpod.v1.GetOrganizationRequest\032\".gitpo" +
-      "d.v1.GetOrganizationResponse\"\000\022c\n\022Update" +
-      "Organization\022$.gitpod.v1.UpdateOrganizat" +
-      "ionRequest\032%.gitpod.v1.UpdateOrganizatio" +
-      "nResponse\"\000\022`\n\021ListOrganizations\022#.gitpo" +
-      "d.v1.ListOrganizationsRequest\032$.gitpod.v" +
-      "1.ListOrganizationsResponse\"\000\022c\n\022DeleteO" +
-      "rganization\022$.gitpod.v1.DeleteOrganizati" +
-      "onRequest\032%.gitpod.v1.DeleteOrganization" +
-      "Response\"\000\022x\n\031GetOrganizationInvitation\022" +
-      "+.gitpod.v1.GetOrganizationInvitationReq" +
-      "uest\032,.gitpod.v1.GetOrganizationInvitati" +
-      "onResponse\"\000\022]\n\020JoinOrganization\022\".gitpo" +
-      "d.v1.JoinOrganizationRequest\032#.gitpod.v1" +
-      ".JoinOrganizationResponse\"\000\022~\n\033ResetOrga" +
-      "nizationInvitation\022-.gitpod.v1.ResetOrga" +
-      "nizationInvitationRequest\032..gitpod.v1.Re" +
-      "setOrganizationInvitationResponse\"\000\022r\n\027L" +
-      "istOrganizationMembers\022).gitpod.v1.ListO" +
-      "rganizationMembersRequest\032*.gitpod.v1.Li" +
-      "stOrganizationMembersResponse\"\000\022u\n\030Updat" +
-      "eOrganizationMember\022*.gitpod.v1.UpdateOr" +
-      "ganizationMemberRequest\032+.gitpod.v1.Upda" +
-      "teOrganizationMemberResponse\"\000\022u\n\030Delete" +
-      "OrganizationMember\022*.gitpod.v1.DeleteOrg" +
-      "anizationMemberRequest\032+.gitpod.v1.Delet" +
-      "eOrganizationMemberResponse\"\000\022r\n\027GetOrga" +
-      "nizationSettings\022).gitpod.v1.GetOrganiza" +
-      "tionSettingsRequest\032*.gitpod.v1.GetOrgan" +
-      "izationSettingsResponse\"\000\022{\n\032UpdateOrgan" +
-      "izationSettings\022,.gitpod.v1.UpdateOrgani" +
-      "zationSettingsRequest\032-.gitpod.v1.Update" +
-      "OrganizationSettingsResponse\"\000\022\215\001\n ListO" +
-      "rganizationWorkspaceClasses\0222.gitpod.v1." +
-      "ListOrganizationWorkspaceClassesRequest\032" +
-      "3.gitpod.v1.ListOrganizationWorkspaceCla" +
-      "ssesResponse\"\000BQ\n\026io.gitpod.publicapi.v1" +
-      "Z7github.com/gitpod-io/gitpod/components" +
-      "/public-api/go/v1b\006proto3"
+      "nId\022\027\n\004name\030\002 \001(\tH\000R\004name\210\001\001B\007\n\005_name\"Y\n" +
+      "\032UpdateOrganizationResponse\022;\n\014organizat" +
+      "ion\030\001 \001(\0132\027.gitpod.v1.OrganizationR\014orga" +
+      "nization\"\252\001\n\017TimeoutSettings\022>\n\ninactivi" +
+      "ty\030\001 \001(\0132\031.google.protobuf.DurationH\000R\ni" +
+      "nactivity\210\001\001\0221\n\022deny_user_timeouts\030\002 \001(\010" +
+      "H\001R\020denyUserTimeouts\210\001\001B\r\n\013_inactivityB\025" +
+      "\n\023_deny_user_timeouts\"\212\013\n!UpdateOrganiza" +
+      "tionSettingsRequest\022\'\n\017organization_id\030\001" +
+      " \001(\tR\016organizationId\022A\n\032workspace_sharin" +
+      "g_disabled\030\003 \001(\010H\000R\030workspaceSharingDisa" +
+      "bled\210\001\001\022;\n\027default_workspace_image\030\004 \001(\t" +
+      "H\001R\025defaultWorkspaceImage\210\001\001\022:\n\031allowed_" +
+      "workspace_classes\030\005 \003(\tR\027allowedWorkspac" +
+      "eClasses\0226\n\027restricted_editor_names\030\006 \003(" +
+      "\tR\025restrictedEditorNames\022H\n\036update_restr" +
+      "icted_editor_names\030\007 \001(\010H\002R\033updateRestri" +
+      "ctedEditorNames\210\001\001\022|\n\026pinned_editor_vers" +
+      "ions\030\010 \003(\0132F.gitpod.v1.UpdateOrganizatio" +
+      "nSettingsRequest.PinnedEditorVersionsEnt" +
+      "ryR\024pinnedEditorVersions\022F\n\035update_pinne" +
+      "d_editor_versions\030\t \001(\010H\003R\032updatePinnedE" +
+      "ditorVersions\210\001\001\022&\n\014default_role\030\n \001(\tH\004" +
+      "R\013defaultRole\210\001\001\022J\n\020timeout_settings\030\013 \001" +
+      "(\0132\032.gitpod.v1.TimeoutSettingsH\005R\017timeou" +
+      "tSettings\210\001\001\022L\n\021role_restrictions\030\014 \003(\0132" +
+      "\037.gitpod.v1.RoleRestrictionEntryR\020roleRe" +
+      "strictions\022=\n\030update_role_restrictions\030\r" +
+      " \001(\010H\006R\026updateRoleRestrictions\210\001\001\022J\n\037max" +
+      "_parallel_running_workspaces\030\017 \001(\005H\007R\034ma" +
+      "xParallelRunningWorkspaces\210\001\001\022S\n\023onboard" +
+      "ing_settings\030\020 \001(\0132\035.gitpod.v1.Onboardin" +
+      "gSettingsH\010R\022onboardingSettings\210\001\001\0225\n\024an" +
+      "notate_git_commits\030\021 \001(\010H\tR\022annotateGitC" +
+      "ommits\210\001\001\032G\n\031PinnedEditorVersionsEntry\022\020" +
+      "\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\002" +
+      "8\001B\035\n\033_workspace_sharing_disabledB\032\n\030_de" +
+      "fault_workspace_imageB!\n\037_update_restric" +
+      "ted_editor_namesB \n\036_update_pinned_edito" +
+      "r_versionsB\017\n\r_default_roleB\023\n\021_timeout_" +
+      "settingsB\033\n\031_update_role_restrictionsB\"\n" +
+      " _max_parallel_running_workspacesB\026\n\024_on" +
+      "boarding_settingsB\027\n\025_annotate_git_commi" +
+      "ts\"a\n\"UpdateOrganizationSettingsResponse" +
+      "\022;\n\010settings\030\001 \001(\0132\037.gitpod.v1.Organizat" +
+      "ionSettingsR\010settings\"I\n\036GetOrganization" +
+      "SettingsRequest\022\'\n\017organization_id\030\001 \001(\t" +
+      "R\016organizationId\"^\n\037GetOrganizationSetti" +
+      "ngsResponse\022;\n\010settings\030\001 \001(\0132\037.gitpod.v" +
+      "1.OrganizationSettingsR\010settings\"/\n\031Crea" +
+      "teOrganizationRequest\022\022\n\004name\030\001 \001(\tR\004nam" +
+      "e\"Y\n\032CreateOrganizationResponse\022;\n\014organ" +
+      "ization\030\001 \001(\0132\027.gitpod.v1.OrganizationR\014" +
+      "organization\"A\n\026GetOrganizationRequest\022\'" +
+      "\n\017organization_id\030\001 \001(\tR\016organizationId\"" +
+      "V\n\027GetOrganizationResponse\022;\n\014organizati" +
+      "on\030\001 \001(\0132\027.gitpod.v1.OrganizationR\014organ" +
+      "ization\"\332\001\n\030ListOrganizationsRequest\022<\n\n" +
+      "pagination\030\001 \001(\0132\034.gitpod.v1.PaginationR" +
+      "equestR\npagination\022?\n\005scope\030\002 \001(\0162).gitp" +
+      "od.v1.ListOrganizationsRequest.ScopeR\005sc" +
+      "ope\"?\n\005Scope\022\025\n\021SCOPE_UNSPECIFIED\020\000\022\020\n\014S" +
+      "COPE_MEMBER\020\001\022\r\n\tSCOPE_ALL\020\002\"\231\001\n\031ListOrg" +
+      "anizationsResponse\022=\n\rorganizations\030\001 \003(" +
+      "\0132\027.gitpod.v1.OrganizationR\rorganization" +
+      "s\022=\n\npagination\030\002 \001(\0132\035.gitpod.v1.Pagina" +
+      "tionResponseR\npagination\"D\n\031DeleteOrgani" +
+      "zationRequest\022\'\n\017organization_id\030\001 \001(\tR\016" +
+      "organizationId\"\034\n\032DeleteOrganizationResp" +
+      "onse\"K\n GetOrganizationInvitationRequest" +
+      "\022\'\n\017organization_id\030\001 \001(\tR\016organizationI" +
+      "d\"H\n!GetOrganizationInvitationResponse\022#" +
+      "\n\rinvitation_id\030\001 \001(\tR\014invitationId\">\n\027J" +
+      "oinOrganizationRequest\022#\n\rinvitation_id\030" +
+      "\001 \001(\tR\014invitationId\"C\n\030JoinOrganizationR" +
+      "esponse\022\'\n\017organization_id\030\001 \001(\tR\016organi" +
+      "zationId\"M\n\"ResetOrganizationInvitationR" +
+      "equest\022\'\n\017organization_id\030\001 \001(\tR\016organiz" +
+      "ationId\"J\n#ResetOrganizationInvitationRe" +
+      "sponse\022#\n\rinvitation_id\030\001 \001(\tR\014invitatio" +
+      "nId\"\207\001\n\036ListOrganizationMembersRequest\022\'" +
+      "\n\017organization_id\030\001 \001(\tR\016organizationId\022" +
+      "<\n\npagination\030\002 \001(\0132\034.gitpod.v1.Paginati" +
+      "onRequestR\npagination\"\231\001\n\037ListOrganizati" +
+      "onMembersResponse\0227\n\007members\030\001 \003(\0132\035.git" +
+      "pod.v1.OrganizationMemberR\007members\022=\n\npa" +
+      "gination\030\002 \001(\0132\035.gitpod.v1.PaginationRes" +
+      "ponseR\npagination\"\242\001\n\037UpdateOrganization" +
+      "MemberRequest\022\'\n\017organization_id\030\001 \001(\tR\016" +
+      "organizationId\022\027\n\007user_id\030\002 \001(\tR\006userId\022" +
+      "4\n\004role\030\003 \001(\0162\033.gitpod.v1.OrganizationRo" +
+      "leH\000R\004role\210\001\001B\007\n\005_role\"Y\n UpdateOrganiza" +
+      "tionMemberResponse\0225\n\006member\030\001 \001(\0132\035.git" +
+      "pod.v1.OrganizationMemberR\006member\"c\n\037Del" +
+      "eteOrganizationMemberRequest\022\'\n\017organiza" +
+      "tion_id\030\001 \001(\tR\016organizationId\022\027\n\007user_id" +
+      "\030\002 \001(\tR\006userId\"\"\n DeleteOrganizationMemb" +
+      "erResponse*\224\001\n\020OrganizationRole\022!\n\035ORGAN" +
+      "IZATION_ROLE_UNSPECIFIED\020\000\022\033\n\027ORGANIZATI" +
+      "ON_ROLE_OWNER\020\001\022\034\n\030ORGANIZATION_ROLE_MEM" +
+      "BER\020\002\022\"\n\036ORGANIZATION_ROLE_COLLABORATOR\020" +
+      "\003*t\n\026OrganizationPermission\022\'\n#ORGANIZAT" +
+      "ION_PERMISSION_UNSPECIFIED\020\000\0221\n-ORGANIZA" +
+      "TION_PERMISSION_START_ARBITRARY_REPOS\020\0012" +
+      "\276\014\n\023OrganizationService\022c\n\022CreateOrganiz" +
+      "ation\022$.gitpod.v1.CreateOrganizationRequ" +
+      "est\032%.gitpod.v1.CreateOrganizationRespon" +
+      "se\"\000\022Z\n\017GetOrganization\022!.gitpod.v1.GetO" +
+      "rganizationRequest\032\".gitpod.v1.GetOrgani" +
+      "zationResponse\"\000\022c\n\022UpdateOrganization\022$" +
+      ".gitpod.v1.UpdateOrganizationRequest\032%.g" +
+      "itpod.v1.UpdateOrganizationResponse\"\000\022`\n" +
+      "\021ListOrganizations\022#.gitpod.v1.ListOrgan" +
+      "izationsRequest\032$.gitpod.v1.ListOrganiza" +
+      "tionsResponse\"\000\022c\n\022DeleteOrganization\022$." +
+      "gitpod.v1.DeleteOrganizationRequest\032%.gi" +
+      "tpod.v1.DeleteOrganizationResponse\"\000\022x\n\031" +
+      "GetOrganizationInvitation\022+.gitpod.v1.Ge" +
+      "tOrganizationInvitationRequest\032,.gitpod." +
+      "v1.GetOrganizationInvitationResponse\"\000\022]" +
+      "\n\020JoinOrganization\022\".gitpod.v1.JoinOrgan" +
+      "izationRequest\032#.gitpod.v1.JoinOrganizat" +
+      "ionResponse\"\000\022~\n\033ResetOrganizationInvita" +
+      "tion\022-.gitpod.v1.ResetOrganizationInvita" +
+      "tionRequest\032..gitpod.v1.ResetOrganizatio" +
+      "nInvitationResponse\"\000\022r\n\027ListOrganizatio" +
+      "nMembers\022).gitpod.v1.ListOrganizationMem" +
+      "bersRequest\032*.gitpod.v1.ListOrganization" +
+      "MembersResponse\"\000\022u\n\030UpdateOrganizationM" +
+      "ember\022*.gitpod.v1.UpdateOrganizationMemb" +
+      "erRequest\032+.gitpod.v1.UpdateOrganization" +
+      "MemberResponse\"\000\022u\n\030DeleteOrganizationMe" +
+      "mber\022*.gitpod.v1.DeleteOrganizationMembe" +
+      "rRequest\032+.gitpod.v1.DeleteOrganizationM" +
+      "emberResponse\"\000\022r\n\027GetOrganizationSettin" +
+      "gs\022).gitpod.v1.GetOrganizationSettingsRe" +
+      "quest\032*.gitpod.v1.GetOrganizationSetting" +
+      "sResponse\"\000\022{\n\032UpdateOrganizationSetting" +
+      "s\022,.gitpod.v1.UpdateOrganizationSettings" +
+      "Request\032-.gitpod.v1.UpdateOrganizationSe" +
+      "ttingsResponse\"\000\022\215\001\n ListOrganizationWor" +
+      "kspaceClasses\0222.gitpod.v1.ListOrganizati" +
+      "onWorkspaceClassesRequest\0323.gitpod.v1.Li" +
+      "stOrganizationWorkspaceClassesResponse\"\000" +
+      "BQ\n\026io.gitpod.publicapi.v1Z7github.com/g" +
+      "itpod-io/gitpod/components/public-api/go" +
+      "/v1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -30811,7 +30746,7 @@ java.lang.String defaultValue) {
     internal_static_gitpod_v1_OnboardingSettings_WelcomeMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gitpod_v1_OnboardingSettings_WelcomeMessage_descriptor,
-        new java.lang.String[] { "Enabled", "Message", "Footer", "FeaturedMemberId", "FeaturedMemberResolvedAvatarUrl", });
+        new java.lang.String[] { "Enabled", "Message", "FeaturedMemberId", "FeaturedMemberResolvedAvatarUrl", });
     internal_static_gitpod_v1_OrganizationSettings_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_gitpod_v1_OrganizationSettings_fieldAccessorTable = new

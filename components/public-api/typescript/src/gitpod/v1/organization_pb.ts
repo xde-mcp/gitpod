@@ -304,30 +304,23 @@ export class OnboardingSettings_WelcomeMessage extends Message<OnboardingSetting
   /**
    * message is the welcome message for the organization
    *
-   * @generated from field: string message = 2;
+   * @generated from field: optional string message = 2;
    */
-  message = "";
-
-  /**
-   * footer is the footer message for the welcome message
-   *
-   * @generated from field: string footer = 3;
-   */
-  footer = "";
+  message?: string;
 
   /**
    * featured_member_id is the ID of the member to show in the welcome message
    *
-   * @generated from field: string featured_member_id = 4;
+   * @generated from field: optional string featured_member_id = 4;
    */
-  featuredMemberId = "";
+  featuredMemberId?: string;
 
   /**
    * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
    *
-   * @generated from field: string featured_member_resolved_avatar_url = 5;
+   * @generated from field: optional string featured_member_resolved_avatar_url = 5;
    */
-  featuredMemberResolvedAvatarUrl = "";
+  featuredMemberResolvedAvatarUrl?: string;
 
   constructor(data?: PartialMessage<OnboardingSettings_WelcomeMessage>) {
     super();
@@ -338,10 +331,9 @@ export class OnboardingSettings_WelcomeMessage extends Message<OnboardingSetting
   static readonly typeName = "gitpod.v1.OnboardingSettings.WelcomeMessage";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 2, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "footer", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "featured_member_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "featured_member_resolved_avatar_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 4, name: "featured_member_id", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 5, name: "featured_member_resolved_avatar_url", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OnboardingSettings_WelcomeMessage {

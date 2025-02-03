@@ -376,6 +376,13 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
                 }
             }
 
+            if (
+                req.onboardingSettings.welcomeMessage?.enabled &&
+                req.onboardingSettings.welcomeMessage.message?.length === 0
+            ) {
+                throw new ApplicationError(ErrorCodes.BAD_REQUEST, "welcomeMessage must not be empty when enabled");
+            }
+
             update.onboardingSettings = req.onboardingSettings;
         }
         if (req.annotateGitCommits !== undefined) {

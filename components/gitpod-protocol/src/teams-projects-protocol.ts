@@ -277,7 +277,7 @@ export interface OnboardingSettings {
      */
     welcomeMessage?: {
         featuredMemberId?: string;
-        message: string;
+        message?: string;
         footer?: string;
     };
 }

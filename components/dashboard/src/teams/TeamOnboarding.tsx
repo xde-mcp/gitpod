@@ -4,7 +4,10 @@
  * See License.AGPL.txt in the project root for license information.
  */
 
-import { OrganizationSettings } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import {
+    OnboardingSettings_WelcomeMessage,
+    OrganizationSettings,
+} from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { Heading2, Heading3, Subheading } from "../components/typography/headings";
 import { useIsOwner, useListOrganizationMembers } from "../data/organizations/members-query";
@@ -26,10 +29,6 @@ import { Button } from "@podkit/buttons/Button";
 import { SwitchInputField } from "@podkit/switch/Switch";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@podkit/dropdown/DropDown";
 
-const sampleMarkdown = `“With Gitpod, you'll boost your productivity and streamline your workflow, giving you the freedom to work how you want while helping our team meet its efficiency goals.”
-
-**Hannah Cole** - CTO Acme, Inc.
-`;
 const gitpodWelcomeSubheading = `Gitpod’s sandboxed, ephemeral development environments enable you to use your existing tools without worrying about vulnerabilities impacting their local machines.`;
 
 export default function TeamOnboardingPage() {
@@ -42,10 +41,8 @@ export default function TeamOnboardingPage() {
     const updateTeamSettings = useUpdateOrgSettingsMutation();
 
     const [internalLink, setInternalLink] = useState<string | undefined>(undefined);
-    const [welcomeMessage, setWelcomeMessage] = useState<string>(sampleMarkdown);
-    const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
     const [welcomeMessageEditorOpen, setWelcomeMessageEditorOpen] = useState<boolean>(false);
-    const [avatarURL, setAvatarURL] = useState<string | undefined>(undefined);
+
     const handleUpdateTeamSettings = useCallback(
         async (newSettings: Partial<PlainMessage<OrganizationSettings>>, options?: { throwMutateError?: boolean }) => {
             if (!org?.id) {
@@ -129,47 +126,50 @@ export default function TeamOnboardingPage() {
                     >
                         <SwitchInputField
                             id="show-welcome-message"
-                            checked={showWelcomeMessage}
+                            checked={settings?.onboardingSettings?.welcomeMessage?.enabled ?? false}
                             disabled={!isOwner || updateTeamSettings.isLoading}
-                            onCheckedChange={setShowWelcomeMessage}
+                            onCheckedChange={(checked) => {
+                                if (checked) {
+                                    if (!settings?.onboardingSettings?.welcomeMessage?.message) {
+                                        toast("Please set up a welcome message first.");
+                                        return;
+                                    }
+                                }
+
+                                updateTeamSettings.mutate({
+                                    onboardingSettings: {
+                                        welcomeMessage: {
+                                            enabled: checked,
+                                            message: settings?.onboardingSettings?.welcomeMessage?.message,
+                                            featuredMemberId:
+                                                settings?.onboardingSettings?.welcomeMessage?.featuredMemberId,
+                                        },
+                                    },
+                                });
+                            }}
                             label=""
                         />
                     </InputField>
+
+                    <WelcomeMessageEditor
+                        isLoading={updateTeamSettings.isLoading}
+                        isOwner={isOwner}
+                        isOpen={welcomeMessageEditorOpen}
+                        setIsOpen={setWelcomeMessageEditorOpen}
+                        handleUpdateTeamSettings={handleUpdateTeamSettings}
+                        settings={settings?.onboardingSettings?.welcomeMessage}
+                    />
+
+                    {/* todo: add a warning if the welcome message is empty */}
 
                     <span className="text-pk-content-secondary text-sm">
                         Here's a preview of the welcome message that will be shown to your organization members:
                     </span>
                     <WelcomeMessagePreview
-                        welcomeMessage={welcomeMessage}
+                        welcomeMessage={settings?.onboardingSettings?.welcomeMessage?.message}
                         setWelcomeMessageEditorOpen={setWelcomeMessageEditorOpen}
-                        avatarURL={avatarURL}
-                        disabled={!showWelcomeMessage}
+                        disabled={!isOwner || updateTeamSettings.isLoading}
                     />
-
-                    <Modal
-                        onClose={() => setWelcomeMessageEditorOpen(false)}
-                        visible={welcomeMessageEditorOpen}
-                        containerClassName="min-[576px]:max-w-[650px]"
-                    >
-                        <ModalHeader>Edit welcome message</ModalHeader>
-                        <ModalBody>
-                            <WelcomeMessageEditor
-                                welcomeMessage={welcomeMessage}
-                                setWelcomeMessage={setWelcomeMessage}
-                                disabled={!showWelcomeMessage}
-                                avatarURL={avatarURL}
-                                setAvatarURL={setAvatarURL}
-                            />
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button variant="secondary" onClick={() => setWelcomeMessageEditorOpen(false)}>
-                                Cancel
-                            </Button>
-                            <LoadingButton type="submit" loading={updateTeamSettings.isLoading} disabled={!isOwner}>
-                                Save
-                            </LoadingButton>
-                        </ModalFooter>
-                    </Modal>
                 </ConfigurationSettingsField>
             </div>
         </OrgSettingsPage>
@@ -177,17 +177,18 @@ export default function TeamOnboardingPage() {
 }
 
 type WelcomeMessagePreviewProps = {
-    welcomeMessage: string;
-    avatarURL: string | undefined;
+    welcomeMessage: string | undefined;
     disabled?: boolean;
     setWelcomeMessageEditorOpen: (open: boolean) => void;
 };
 const WelcomeMessagePreview = ({
     welcomeMessage,
-    avatarURL,
     disabled,
     setWelcomeMessageEditorOpen,
 }: WelcomeMessagePreviewProps) => {
+    const { data: settings } = useOrgSettingsQuery();
+    const avatarUrl = settings?.onboardingSettings?.welcomeMessage?.featuredMemberResolvedAvatarUrl;
+
     return (
         <div className="max-w-2xl mx-auto">
             <div className="flex justify-between gap-2 items-center">
@@ -198,82 +199,129 @@ const WelcomeMessagePreview = ({
             </div>
             <Subheading>{gitpodWelcomeSubheading}</Subheading>
             {/* todo: sanitize md */}
-            <div className="p-8 my-4 bg-pk-surface-secondary text-pk-content-primary rounded-xl flex flex-col gap-5 items-center justify-center">
-                {avatarURL && <img src={avatarURL} alt="" className="w-12 h-12 rounded-full" />}
-                <MDEditor.Markdown
-                    source={welcomeMessage}
-                    className="md-preview space-y-4 text-center bg-pk-surface-secondary"
-                />
-            </div>
+            {welcomeMessage && (
+                <div className="p-8 my-4 bg-pk-surface-secondary text-pk-content-primary rounded-xl flex flex-col gap-5 items-center justify-center">
+                    {avatarUrl && <img src={avatarUrl} alt="" className="w-12 h-12 rounded-full" />}
+                    <MDEditor.Markdown
+                        source={welcomeMessage}
+                        className="md-preview space-y-4 text-center bg-pk-surface-secondary"
+                    />
+                </div>
+            )}
         </div>
     );
 };
 
 type WelcomeMessageEditorProps = {
-    welcomeMessage: string;
-    setWelcomeMessage: (welcomeMessage: string) => void;
-    disabled?: boolean;
-    avatarURL: string | undefined;
-    setAvatarURL: (avatarURL: string | undefined) => void;
+    settings: OnboardingSettings_WelcomeMessage | undefined;
+    handleUpdateTeamSettings: (
+        newSettings: Partial<PlainMessage<OrganizationSettings>>,
+        options?: { throwMutateError?: boolean },
+    ) => Promise<void>;
+    isLoading: boolean;
+    isOwner: boolean;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
 };
 const WelcomeMessageEditor = ({
-    welcomeMessage,
-    setWelcomeMessage,
-    disabled,
-    avatarURL,
-    setAvatarURL,
+    handleUpdateTeamSettings,
+    isLoading,
+    isOwner,
+    settings,
+    isOpen,
+    setIsOpen,
 }: WelcomeMessageEditorProps) => {
+    const [message, setMessage] = useState<string | undefined>(settings?.message);
+    const [featuredMemberId, setFeaturedMemberId] = useState<string | undefined>(settings?.featuredMemberId);
+
+    const updateWelcomeMessage = useCallback(
+        async (e: FormEvent) => {
+            e.preventDefault();
+            await handleUpdateTeamSettings({
+                onboardingSettings: {
+                    welcomeMessage: { message, featuredMemberId, enabled: settings?.enabled ?? false },
+                },
+            });
+        },
+        [handleUpdateTeamSettings, message, featuredMemberId, settings?.enabled],
+    );
+
     return (
-        <div className="space-y-4">
-            <TextInput readOnly value="Welcome to Gitpod" className="cursor-default"></TextInput>
-            <Textarea value={gitpodWelcomeSubheading} readOnly className="cursor-default resize-none" />
-            <div className="w-full flex justify-center">
-                <OrgMemberInput avatarURL={avatarURL} setAvatarURL={setAvatarURL} disabled={disabled} />
-            </div>
-            <InputField label="Welcome message" error={undefined} className="mb-4" labelHidden>
-                <Textarea
-                    className="bg-pk-surface-secondary text-pk-content-primary w-full p-4 rounded-xl min-h-[150px]"
-                    value={welcomeMessage}
-                    placeholder="Write a welcome message to your organization members. Markdown formatting is supported."
-                    onChange={(e) => setWelcomeMessage(e.target.value)}
-                    disabled={disabled}
-                />
-            </InputField>
-        </div>
+        <Modal onClose={() => setIsOpen(false)} visible={isOpen} containerClassName="min-[576px]:max-w-[650px]">
+            <ModalHeader>Edit welcome message</ModalHeader>
+            <ModalBody>
+                <form id="welcome-message-editor" onSubmit={updateWelcomeMessage} className="space-y-4">
+                    <TextInput readOnly value="Welcome to Gitpod" className="cursor-default"></TextInput>
+                    <Textarea value={gitpodWelcomeSubheading} readOnly className="cursor-default resize-none" />
+                    <div className="w-full flex justify-center">
+                        <OrgMemberInput settings={settings} setFeaturedMemberId={setFeaturedMemberId} />
+                    </div>
+                    <InputField label="Welcome message" error={undefined} className="mb-4" labelHidden>
+                        <Textarea
+                            className="bg-pk-surface-secondary text-pk-content-primary w-full p-4 rounded-xl min-h-[150px]"
+                            value={message}
+                            placeholder="Write a welcome message to your organization members. Markdown formatting is supported."
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
+                    </InputField>
+                </form>
+            </ModalBody>
+            <ModalFooter>
+                <Button variant="secondary" onClick={() => setIsOpen(false)}>
+                    Cancel
+                </Button>
+                <LoadingButton type="submit" loading={isLoading} disabled={!isOwner} form="welcome-message-editor">
+                    Save
+                </LoadingButton>
+            </ModalFooter>
+        </Modal>
     );
 };
 
 type OrgMemberSelectProps = {
-    avatarURL: string | undefined;
-    setAvatarURL: (avatarURL: string | undefined) => void;
-    disabled?: boolean;
+    settings: OnboardingSettings_WelcomeMessage | undefined;
+    setFeaturedMemberId: (featuredMemberId: string | undefined) => void;
 };
-const OrgMemberInput = ({ avatarURL, setAvatarURL, disabled }: OrgMemberSelectProps) => {
+const OrgMemberInput = ({ settings, setFeaturedMemberId }: OrgMemberSelectProps) => {
     const { data: members } = useListOrganizationMembers();
+
+    const [avatarUrl, setAvatarUrl] = useState<string | undefined>(settings?.featuredMemberResolvedAvatarUrl);
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <div className="flex flex-col justify-center items-center gap-2">
-                    {avatarURL ? (
-                        <img src={avatarURL} alt="" className="w-16 h-16 rounded-full" />
+                    {avatarUrl ? (
+                        <img src={avatarUrl} alt="" className="w-16 h-16 rounded-full" />
                     ) : (
                         <div className="w-16 h-16 rounded-full bg-[#EA71DE]" />
                     )}
-                    <Button variant="secondary" size="sm">
+                    <Button variant="secondary" size="sm" type="button">
                         Change Photo
                     </Button>
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem key="disabled" onClick={() => setAvatarURL(undefined)}>
+                <DropdownMenuItem
+                    key="disabled"
+                    onClick={() => {
+                        setFeaturedMemberId(undefined);
+                        setAvatarUrl(undefined);
+                    }}
+                >
                     <div className="flex items-center gap-2">
                         <div className="w-4 h-4 rounded-full bg-pk-surface-tertiary" />
                         Disable image
                     </div>
                 </DropdownMenuItem>
                 {members?.map((member) => (
-                    <DropdownMenuItem key={member.userId} onClick={() => setAvatarURL(member.avatarUrl)}>
+                    <DropdownMenuItem
+                        key={member.userId}
+                        onClick={() => {
+                            setFeaturedMemberId(member.userId);
+                            setAvatarUrl(member.avatarUrl);
+                        }}
+                    >
                         <div className="flex items-center gap-2">
                             <img src={member.avatarUrl} alt={member.fullName} className="w-4 h-4 rounded-full" />
                             {member.fullName}
