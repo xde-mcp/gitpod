@@ -49,8 +49,28 @@ message RoleRestrictionEntry {
 }
 
 message OnboardingSettings {
+  message WelcomeMessage {
+    // enabled specifies whether the welcome message is enabled
+    bool enabled = 1;
+
+    // message is the welcome message for the organization
+    string message = 2;
+
+    // footer is the footer message for the welcome message
+    string footer = 3;
+
+    // featured_member_id is the ID of the member to show in the welcome message
+    string featured_member_id = 4;
+
+    // featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
+    string featured_member_resolved_avatar_url = 5;
+  }
+
   // internal_link is the link to an internal onboarding page for the organization, possibly featuring a custom onboarding guide and other resources
   optional string internal_link = 1;
+
+  // welcome_message is the welcome message for the organization
+  optional WelcomeMessage welcome_message = 3;
 }
 
 message OrganizationSettings {

@@ -254,6 +254,13 @@ export class OnboardingSettings extends Message<OnboardingSettings> {
    */
   internalLink?: string;
 
+  /**
+   * welcome_message is the welcome message for the organization
+   *
+   * @generated from field: optional gitpod.v1.OnboardingSettings.WelcomeMessage welcome_message = 3;
+   */
+  welcomeMessage?: OnboardingSettings_WelcomeMessage;
+
   constructor(data?: PartialMessage<OnboardingSettings>) {
     super();
     proto3.util.initPartial(data, this);
@@ -263,6 +270,7 @@ export class OnboardingSettings extends Message<OnboardingSettings> {
   static readonly typeName = "gitpod.v1.OnboardingSettings";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "internal_link", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 3, name: "welcome_message", kind: "message", T: OnboardingSettings_WelcomeMessage, opt: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OnboardingSettings {
@@ -279,6 +287,77 @@ export class OnboardingSettings extends Message<OnboardingSettings> {
 
   static equals(a: OnboardingSettings | PlainMessage<OnboardingSettings> | undefined, b: OnboardingSettings | PlainMessage<OnboardingSettings> | undefined): boolean {
     return proto3.util.equals(OnboardingSettings, a, b);
+  }
+}
+
+/**
+ * @generated from message gitpod.v1.OnboardingSettings.WelcomeMessage
+ */
+export class OnboardingSettings_WelcomeMessage extends Message<OnboardingSettings_WelcomeMessage> {
+  /**
+   * enabled specifies whether the welcome message is enabled
+   *
+   * @generated from field: bool enabled = 1;
+   */
+  enabled = false;
+
+  /**
+   * message is the welcome message for the organization
+   *
+   * @generated from field: string message = 2;
+   */
+  message = "";
+
+  /**
+   * footer is the footer message for the welcome message
+   *
+   * @generated from field: string footer = 3;
+   */
+  footer = "";
+
+  /**
+   * featured_member_id is the ID of the member to show in the welcome message
+   *
+   * @generated from field: string featured_member_id = 4;
+   */
+  featuredMemberId = "";
+
+  /**
+   * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
+   *
+   * @generated from field: string featured_member_resolved_avatar_url = 5;
+   */
+  featuredMemberResolvedAvatarUrl = "";
+
+  constructor(data?: PartialMessage<OnboardingSettings_WelcomeMessage>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "gitpod.v1.OnboardingSettings.WelcomeMessage";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "footer", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "featured_member_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "featured_member_resolved_avatar_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OnboardingSettings_WelcomeMessage {
+    return new OnboardingSettings_WelcomeMessage().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OnboardingSettings_WelcomeMessage {
+    return new OnboardingSettings_WelcomeMessage().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OnboardingSettings_WelcomeMessage {
+    return new OnboardingSettings_WelcomeMessage().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: OnboardingSettings_WelcomeMessage | PlainMessage<OnboardingSettings_WelcomeMessage> | undefined, b: OnboardingSettings_WelcomeMessage | PlainMessage<OnboardingSettings_WelcomeMessage> | undefined): boolean {
+    return proto3.util.equals(OnboardingSettings_WelcomeMessage, a, b);
   }
 }
 
@@ -707,7 +786,7 @@ export class UpdateOrganizationSettingsRequest extends Message<UpdateOrganizatio
   onboardingSettings?: OnboardingSettings;
 
   /**
-   * annotate_git_commits specifies whether to annotate git commits with the gitpod host
+   * annotate_git_commits specifies whether to annotate git commits created in Gitpod workspaces with the gitpod host
    *
    * @generated from field: optional bool annotate_git_commits = 17;
    */

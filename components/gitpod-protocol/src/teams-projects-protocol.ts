@@ -271,6 +271,15 @@ export interface OnboardingSettings {
      * the link to an internal onboarding page for the organization, possibly featuring a custom onboarding guide and other resources
      */
     internalLink?: string;
+
+    /**
+     * the welcome message for new members of the organization
+     */
+    welcomeMessage?: {
+        featuredMemberId?: string;
+        message: string;
+        footer?: string;
+    };
 }
 
 export type TeamMemberInfo = OrgMemberInfo;

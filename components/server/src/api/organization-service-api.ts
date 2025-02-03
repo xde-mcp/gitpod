@@ -248,6 +248,20 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
         const settings = await this.orgService.getSettings(ctxUserId(), req.organizationId);
         const response = new GetOrganizationSettingsResponse();
         response.settings = this.apiConverter.toOrganizationSettings(settings);
+
+        // resolve the avatar URL for the featured member in the welcome message
+        const onboardingWelcomeMessageFeaturedMemberId =
+            response.settings.onboardingSettings?.welcomeMessage?.featuredMemberId;
+        if (onboardingWelcomeMessageFeaturedMemberId) {
+            const member = await this.orgService
+                .getOrganizationMember(ctxUserId(), req.organizationId, onboardingWelcomeMessageFeaturedMemberId, true)
+                .catch(() => undefined);
+            if (member?.user.avatarUrl && response?.settings?.onboardingSettings?.welcomeMessage) {
+                response.settings.onboardingSettings.welcomeMessage.featuredMemberResolvedAvatarUrl =
+                    member.user.avatarUrl;
+            }
+        }
+
         return response;
     }
 
@@ -346,6 +360,20 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
             }
             if ((req.onboardingSettings.internalLink?.length ?? 0) > 255) {
                 throw new ApplicationError(ErrorCodes.BAD_REQUEST, "internalLink must be <= 255 characters");
+            }
+
+            if (req.onboardingSettings.welcomeMessage?.featuredMemberId) {
+                const member = await this.orgService
+                    .getOrganizationMember(
+                        ctxUserId(),
+                        req.organizationId,
+                        req.onboardingSettings.welcomeMessage.featuredMemberId,
+                        true,
+                    )
+                    .catch(() => undefined);
+                if (!member) {
+                    throw new ApplicationError(ErrorCodes.BAD_REQUEST, "featuredMemberId not found");
+                }
             }
 
             update.onboardingSettings = req.onboardingSettings;

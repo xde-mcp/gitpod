@@ -7,7 +7,7 @@
 import { OrganizationSettings } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { Heading2, Heading3, Subheading } from "../components/typography/headings";
-import { useIsOwner } from "../data/organizations/members-query";
+import { useIsOwner, useListOrganizationMembers } from "../data/organizations/members-query";
 import { useOrgSettingsQuery } from "../data/organizations/org-settings-query";
 import { useCurrentOrg } from "../data/organizations/orgs-query";
 import { useUpdateOrgSettingsMutation } from "../data/organizations/update-org-settings-mutation";
@@ -24,6 +24,7 @@ import { Textarea } from "@podkit/forms/TextArea";
 import Modal, { ModalFooter, ModalBody, ModalHeader } from "../components/Modal";
 import { Button } from "@podkit/buttons/Button";
 import { SwitchInputField } from "@podkit/switch/Switch";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@podkit/select/Select";
 
 const sampleMarkdown = `“With Gitpod, you'll boost your productivity and streamline your workflow, giving you the freedom to work how you want while helping our team meet its efficiency goals.”
 
@@ -43,6 +44,7 @@ export default function TeamOnboardingPage() {
     const [welcomeMessage, setWelcomeMessage] = useState<string>(sampleMarkdown);
     const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
     const [welcomeMessageEditorOpen, setWelcomeMessageEditorOpen] = useState<boolean>(false);
+    const [avatarURL, setAvatarURL] = useState<string | undefined>(undefined);
     const handleUpdateTeamSettings = useCallback(
         async (newSettings: Partial<PlainMessage<OrganizationSettings>>, options?: { throwMutateError?: boolean }) => {
             if (!org?.id) {
@@ -125,6 +127,7 @@ export default function TeamOnboardingPage() {
                     <WelcomeMessagePreview
                         welcomeMessage={welcomeMessage}
                         setWelcomeMessageEditorOpen={setWelcomeMessageEditorOpen}
+                        avatarURL={avatarURL}
                     />
 
                     <Modal onClose={() => setWelcomeMessageEditorOpen(false)} visible={welcomeMessageEditorOpen}>
@@ -143,6 +146,12 @@ export default function TeamOnboardingPage() {
                                     label=""
                                 />
                             </InputField>
+
+                            <OrgMemberSelect
+                                avatarURL={avatarURL}
+                                setAvatarURL={setAvatarURL}
+                                disabled={!showWelcomeMessage}
+                            />
                             <WelcomeMessageEditor
                                 welcomeMessage={welcomeMessage}
                                 setWelcomeMessage={setWelcomeMessage}
@@ -166,9 +175,14 @@ export default function TeamOnboardingPage() {
 
 type WelcomeMessagePreviewProps = {
     welcomeMessage: string;
+    avatarURL: string | undefined;
     setWelcomeMessageEditorOpen: (open: boolean) => void;
 };
-const WelcomeMessagePreview = ({ welcomeMessage, setWelcomeMessageEditorOpen }: WelcomeMessagePreviewProps) => {
+const WelcomeMessagePreview = ({
+    welcomeMessage,
+    avatarURL,
+    setWelcomeMessageEditorOpen,
+}: WelcomeMessagePreviewProps) => {
     return (
         <div className="max-w-2xl mx-auto">
             <div className="flex justify-between gap-2 items-center">
@@ -182,10 +196,13 @@ const WelcomeMessagePreview = ({ welcomeMessage, setWelcomeMessageEditorOpen }: 
                 worrying about vulnerabilities impacting their local machines.
             </Subheading>
             {/* todo: sanitize md */}
-            <MDEditor.Markdown
-                source={welcomeMessage}
-                className="md-preview space-y-4 p-8 my-4 bg-pk-surface-secondary text-pk-content-primary rounded-xl text-center"
-            />
+            <div className="p-8 my-4 bg-pk-surface-secondary text-pk-content-primary rounded-xl flex flex-col gap-5 items-center justify-center">
+                <img src={avatarURL} alt="" className="w-12 h-12 rounded-full" />
+                <MDEditor.Markdown
+                    source={welcomeMessage}
+                    className="md-preview space-y-4 text-center bg-pk-surface-secondary"
+                />
+            </div>
         </div>
     );
 };
@@ -205,6 +222,44 @@ const WelcomeMessageEditor = ({ welcomeMessage, setWelcomeMessage, disabled }: W
                 onChange={(e) => setWelcomeMessage(e.target.value)}
                 disabled={disabled}
             />
+        </InputField>
+    );
+};
+
+type OrgMemberSelectProps = {
+    avatarURL: string | undefined;
+    setAvatarURL: (avatarURL: string | undefined) => void;
+    disabled?: boolean;
+};
+const OrgMemberSelect = ({ avatarURL, setAvatarURL, disabled }: OrgMemberSelectProps) => {
+    const { data: members } = useListOrganizationMembers();
+
+    return (
+        <InputField label="Show an avatar on the welcome message" error={undefined} className="mb-4">
+            <Select value={avatarURL} onValueChange={setAvatarURL} disabled={disabled}>
+                <SelectTrigger>
+                    <SelectValue placeholder="No member" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectItem value="disabled">No member</SelectItem>
+                    </SelectGroup>
+                    <SelectGroup>
+                        {members?.map((member) => (
+                            <SelectItem key={member.userId} value={member.avatarUrl || member.userId}>
+                                <div className="flex items-center gap-2">
+                                    <img
+                                        src={member.avatarUrl}
+                                        className="w-4 h-4 rounded-full"
+                                        alt={member.fullName}
+                                    />
+                                    {member.fullName}
+                                </div>
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </InputField>
     );
 };

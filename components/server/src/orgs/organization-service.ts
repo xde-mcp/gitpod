@@ -36,6 +36,7 @@ import { UsageService } from "./usage-service";
 import { CostCenter_BillingStrategy } from "@gitpod/gitpod-protocol/lib/usage";
 import { CreateUserParams, UserAuthentication } from "../user/user-authentication";
 import isURL from "validator/lib/isURL";
+import { DBTeamMembership } from "@gitpod/gitpod-db/lib/typeorm/entity/db-team-membership";
 
 @injectable()
 export class OrganizationService {
@@ -116,6 +117,32 @@ export class OrganizationService {
         );
 
         return result;
+    }
+
+    async getOrganizationMember(
+        userId: string,
+        orgId: string,
+        memberId: string,
+        skipPermissionCheck?: boolean,
+    ): Promise<DBTeamMembership & { user: User }> {
+        if (!skipPermissionCheck) {
+            await this.auth.checkPermissionOnOrganization(userId, "read_members", orgId);
+        }
+
+        const membership = await this.teamDB.findTeamMembership(memberId, orgId);
+        if (!membership) {
+            throw new ApplicationError(ErrorCodes.NOT_FOUND, `Organization member ${memberId} not found`);
+        }
+
+        const user = await this.userDB.findUserById(memberId);
+        if (!user) {
+            throw new ApplicationError(ErrorCodes.NOT_FOUND, `User ${memberId} not found`);
+        }
+
+        return {
+            ...membership,
+            user,
+        };
     }
 
     async listOrganizationsByMember(userId: string, memberId: string): Promise<Organization[]> {
