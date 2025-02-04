@@ -255,6 +255,13 @@ export class OnboardingSettings extends Message<OnboardingSettings> {
   internalLink?: string;
 
   /**
+   * recommended_repositories are the repositories that are recommended for new org members
+   *
+   * @generated from field: repeated string recommended_repositories = 2;
+   */
+  recommendedRepositories: string[] = [];
+
+  /**
    * welcome_message is the welcome message for the organization
    *
    * @generated from field: optional gitpod.v1.OnboardingSettings.WelcomeMessage welcome_message = 3;
@@ -270,6 +277,7 @@ export class OnboardingSettings extends Message<OnboardingSettings> {
   static readonly typeName = "gitpod.v1.OnboardingSettings";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "internal_link", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 2, name: "recommended_repositories", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 3, name: "welcome_message", kind: "message", T: OnboardingSettings_WelcomeMessage, opt: true },
   ]);
 

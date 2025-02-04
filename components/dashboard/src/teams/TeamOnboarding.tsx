@@ -19,9 +19,12 @@ import type { PlainMessage } from "@bufbuild/protobuf";
 import { InputField } from "../components/forms/InputField";
 import { TextInput } from "../components/forms/TextInputField";
 import { LoadingButton } from "@podkit/buttons/LoadingButton";
-import { SwitchInputField } from "@podkit/switch/Switch";
-import { WelcomeMessagePreview } from "./onboarding/WelcomeMessagePreview";
-import { WelcomeMessageEditorModal } from "./onboarding/WelcomeMessageEditor";
+import { Link } from "react-router-dom";
+import { useOrgSuggestedRepos } from "../data/organizations/suggested-repositories-query";
+import { RepositoryListItem } from "../repositories/list/RepoListItem";
+import { LoadingState } from "@podkit/loading/LoadingState";
+import { Table, TableHeader, TableRow, TableHead, TableBody } from "@podkit/tables/Table";
+import { WelcomeMessageConfigurationField } from "./onboarding/WelcomeMessageConfigurationField";
 
 export const gitpodWelcomeSubheading =
     `Gitpod’s sandboxed, ephemeral development environments enable you to use your existing tools without worrying about vulnerabilities impacting their local machines.` as const;
@@ -35,8 +38,9 @@ export default function TeamOnboardingPage() {
     const { data: settings } = useOrgSettingsQuery();
     const updateTeamSettings = useUpdateOrgSettingsMutation();
 
+    const { data: suggestedRepos, isLoading: isLoadingSuggestedRepos } = useOrgSuggestedRepos();
+
     const [internalLink, setInternalLink] = useState<string | undefined>(undefined);
-    const [welcomeMessageEditorOpen, setWelcomeMessageEditorOpen] = useState<boolean>(false);
 
     const handleUpdateTeamSettings = useCallback(
         async (newSettings: Partial<PlainMessage<OrganizationSettings>>, options?: { throwMutateError?: boolean }) => {
@@ -67,9 +71,14 @@ export default function TeamOnboardingPage() {
         async (e: FormEvent) => {
             e.preventDefault();
 
-            await handleUpdateTeamSettings({ onboardingSettings: { internalLink } });
+            await handleUpdateTeamSettings({
+                onboardingSettings: {
+                    internalLink,
+                    recommendedRepositories: settings?.onboardingSettings?.recommendedRepositories ?? [],
+                },
+            });
         },
-        [handleUpdateTeamSettings, internalLink],
+        [handleUpdateTeamSettings, internalLink, settings?.onboardingSettings?.recommendedRepositories],
     );
 
     useEffect(() => {
@@ -82,11 +91,11 @@ export default function TeamOnboardingPage() {
         <OrgSettingsPage>
             <div className="space-y-8">
                 <div>
-                    <Heading2>Policies</Heading2>
-                    <Subheading>Restrict workspace classes, editors and sharing across your organization.</Subheading>
+                    <Heading2>Onboarding</Heading2>
+                    <Subheading>Customize the onboarding experience for your organization members.</Subheading>
                 </div>
                 <ConfigurationSettingsField>
-                    <Heading3>Internal dashboard</Heading3>
+                    <Heading3>Internal landing page</Heading3>
                     <Subheading>
                         The link to your internal landing page. This link will be shown to your organization members
                         during the onboarding process. You can disable showing a link by leaving this field empty.
@@ -108,61 +117,52 @@ export default function TeamOnboardingPage() {
                 </ConfigurationSettingsField>
 
                 <ConfigurationSettingsField>
-                    <Heading3>Welcome message</Heading3>
+                    <Heading3>Suggested repositories</Heading3>
                     <Subheading>
-                        A welcome message to your organization members. This message will be shown to your organization
-                        members once they sign up and join your organization.
+                        A list of repositories suggested to new organization members. To manage recommended
+                        repositories, visit the{" "}
+                        <Link to="/repositories" className="gp-link">
+                            Repository settings
+                        </Link>{" "}
+                        page and add / remove repositories from the list using the context menu on the corresponding
+                        repository's row.
                     </Subheading>
-
-                    <InputField
-                        label="Enabled"
-                        hint={<>Enable showing the message to new organization members.</>}
-                        id="show-welcome-message"
-                    >
-                        <SwitchInputField
-                            id="show-welcome-message"
-                            checked={settings?.onboardingSettings?.welcomeMessage?.enabled ?? false}
-                            disabled={!isOwner || updateTeamSettings.isLoading}
-                            onCheckedChange={(checked) => {
-                                if (checked) {
-                                    if (!settings?.onboardingSettings?.welcomeMessage?.message) {
-                                        toast("Please set up a welcome message first.");
-                                        return;
-                                    }
-                                }
-
-                                updateTeamSettings.mutate({
-                                    onboardingSettings: {
-                                        welcomeMessage: {
-                                            enabled: checked,
-                                            message: settings?.onboardingSettings?.welcomeMessage?.message,
-                                            featuredMemberId:
-                                                settings?.onboardingSettings?.welcomeMessage?.featuredMemberId,
-                                        },
-                                    },
-                                });
-                            }}
-                            label=""
-                        />
-                    </InputField>
-
-                    <WelcomeMessageEditorModal
-                        isLoading={updateTeamSettings.isLoading}
-                        isOwner={isOwner}
-                        isOpen={welcomeMessageEditorOpen}
-                        setIsOpen={setWelcomeMessageEditorOpen}
-                        handleUpdateTeamSettings={handleUpdateTeamSettings}
-                        settings={settings?.onboardingSettings?.welcomeMessage}
-                    />
-
-                    <span className="text-pk-content-secondary text-sm">
-                        Here's a preview of the welcome message that will be shown to your organization members:
-                    </span>
-                    <WelcomeMessagePreview
-                        setWelcomeMessageEditorOpen={setWelcomeMessageEditorOpen}
-                        disabled={!isOwner || updateTeamSettings.isLoading}
-                    />
+                    {(suggestedRepos ?? []).length > 0 && (
+                        <Table className="mt-4">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-52">Name</TableHead>
+                                    <TableHead hideOnSmallScreen>Repository</TableHead>
+                                    <TableHead className="w-32" hideOnSmallScreen>
+                                        Created
+                                    </TableHead>
+                                    <TableHead className="w-24" hideOnSmallScreen>
+                                        Prebuilds
+                                    </TableHead>
+                                    {/* Action column, loading status in header */}
+                                    <TableHead className="w-24 text-right">
+                                        {isLoadingSuggestedRepos && (
+                                            <div className="flex flex-right justify-end items-center">
+                                                <LoadingState delay={false} size={16} />
+                                            </div>
+                                        )}
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {suggestedRepos?.map((repo) => (
+                                    <RepositoryListItem
+                                        key={repo.configurationId}
+                                        configuration={repo.configuration}
+                                        isSuggested={true}
+                                    />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )}
                 </ConfigurationSettingsField>
+
+                <WelcomeMessageConfigurationField handleUpdateTeamSettings={handleUpdateTeamSettings} />
             </div>
         </OrgSettingsPage>
     );

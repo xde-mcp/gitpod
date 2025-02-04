@@ -273,6 +273,11 @@ export interface OnboardingSettings {
     internalLink?: string;
 
     /**
+     * the repository IDs of the repositories that are recommended for members to start with
+     */
+    recommendedRepositories?: string[];
+
+    /**
      * the welcome message for new members of the organization
      */
     welcomeMessage?: {

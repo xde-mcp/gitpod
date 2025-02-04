@@ -1148,6 +1148,7 @@ export class PublicAPIConverter {
             onboardingSettings: {
                 internalLink: settings?.onboardingSettings?.internalLink ?? undefined,
                 welcomeMessage: settings?.onboardingSettings?.welcomeMessage ?? undefined,
+                recommendedRepositories: settings?.onboardingSettings?.recommendedRepositories ?? [],
             },
             annotateGitCommits: settings.annotateGitCommits ?? false,
         });
