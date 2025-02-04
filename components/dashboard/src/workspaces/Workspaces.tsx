@@ -37,8 +37,7 @@ import { useUpdateCurrentUserMutation } from "../data/current-user/update-mutati
 import { useUserLoader } from "../hooks/use-user-loader";
 import Tooltip from "../components/Tooltip";
 import { useFeatureFlag } from "../data/featureflag-query";
-import { storageAvailable } from "../utils";
-import { WelcomeMessagePreview } from "../teams/TeamOnboarding";
+import { OrganizationJoinModal } from "../teams/onboarding/OrganizationJoinModal";
 
 export const GETTING_STARTED_DISMISSAL_KEY = "workspace-list-getting-started";
 
@@ -47,18 +46,6 @@ const WorkspacesPage: FunctionComponent = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showInactive, setShowInactive] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-
-    const orgOnboardingPending = useMemo(() => {
-        if (storageAvailable("localStorage")) {
-            return localStorage.getItem("newUserOnboardingPending") === "true";
-        }
-        return false;
-    }, []);
-    const dismissOrgOnboardingPending = useCallback(() => {
-        if (storageAvailable("localStorage")) {
-            localStorage.removeItem("newUserOnboardingPending");
-        }
-    }, []);
 
     const { data, isLoading } = useListWorkspacesQuery({ limit });
     const deleteInactiveWorkspaces = useDeleteInactiveWorkspacesMutation();
@@ -415,11 +402,7 @@ const WorkspacesPage: FunctionComponent = () => {
                     <EmptyWorkspacesContent />
                 ))}
 
-            <Modal visible={orgOnboardingPending} onClose={dismissOrgOnboardingPending}>
-                <ModalBody>
-                    <WelcomeMessagePreview />
-                </ModalBody>
-            </Modal>
+            {orgSettings && <OrganizationJoinModal orgSettings={orgSettings} />}
         </>
     );
 };

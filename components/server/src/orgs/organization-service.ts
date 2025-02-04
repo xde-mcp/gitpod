@@ -262,19 +262,34 @@ export class OrganizationService {
         }
     }
 
+    /**
+     * List members of an organization, excluding the built-in installation admin user and all deleted users.
+     */
     public async listMembers(userId: string, orgId: string): Promise<OrgMemberInfo[]> {
         await this.auth.checkPermissionOnOrganization(userId, "read_members", orgId);
         const members = await this.teamDB.findMembersByTeam(orgId);
 
-        // TODO(at) remove this workaround once email addresses are persisted under `User.emails`.
-        // For now we're avoiding adding `getPrimaryEmail` as dependency to `gitpod-db` module.
-        for (const member of members) {
-            const user = await this.userDB.findUserById(member.userId);
-            if (user) {
-                member.primaryEmail = getPrimaryEmail(user);
-            }
-        }
-        return members;
+        const filteredMembers = await Promise.all(
+            members.map(async (member) => {
+                // TODO(at) remove this workaround once email addresses are persisted under `User.emails`.
+                // For now we're avoiding adding `getPrimaryEmail` as dependency to `gitpod-db` module.
+                const user = await this.userDB.findUserById(member.userId);
+                if (user) {
+                    if (user.markedDeleted) {
+                        return null;
+                    }
+                    if (user.id === BUILTIN_INSTLLATION_ADMIN_USER_ID) {
+                        return null;
+                    }
+
+                    member.primaryEmail = getPrimaryEmail(user);
+                }
+
+                return member;
+            }),
+        );
+
+        return filteredMembers.filter((m) => !!m);
     }
 
     public async getOrCreateInvite(userId: string, orgId: string): Promise<TeamMembershipInvite> {

@@ -4,13 +4,10 @@
  * See License.AGPL.txt in the project root for license information.
  */
 
-import {
-    OnboardingSettings_WelcomeMessage,
-    OrganizationSettings,
-} from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import { OrganizationSettings } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { Heading2, Heading3, Subheading } from "../components/typography/headings";
-import { useIsOwner, useListOrganizationMembers } from "../data/organizations/members-query";
+import { useIsOwner } from "../data/organizations/members-query";
 import { useOrgSettingsQuery } from "../data/organizations/org-settings-query";
 import { useCurrentOrg } from "../data/organizations/orgs-query";
 import { useUpdateOrgSettingsMutation } from "../data/organizations/update-org-settings-mutation";
@@ -22,14 +19,12 @@ import type { PlainMessage } from "@bufbuild/protobuf";
 import { InputField } from "../components/forms/InputField";
 import { TextInput } from "../components/forms/TextInputField";
 import { LoadingButton } from "@podkit/buttons/LoadingButton";
-import MDEditor from "@uiw/react-md-editor";
-import { Textarea } from "@podkit/forms/TextArea";
-import Modal, { ModalFooter, ModalBody, ModalHeader } from "../components/Modal";
-import { Button } from "@podkit/buttons/Button";
 import { SwitchInputField } from "@podkit/switch/Switch";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@podkit/dropdown/DropDown";
+import { WelcomeMessagePreview } from "./onboarding/WelcomeMessagePreview";
+import { WelcomeMessageEditorModal } from "./onboarding/WelcomeMessageEditor";
 
-const gitpodWelcomeSubheading = `Gitpod’s sandboxed, ephemeral development environments enable you to use your existing tools without worrying about vulnerabilities impacting their local machines.`;
+export const gitpodWelcomeSubheading =
+    `Gitpod’s sandboxed, ephemeral development environments enable you to use your existing tools without worrying about vulnerabilities impacting their local machines.` as const;
 
 export default function TeamOnboardingPage() {
     useDocumentTitle("Organization Settings - Onboarding");
@@ -151,7 +146,7 @@ export default function TeamOnboardingPage() {
                         />
                     </InputField>
 
-                    <WelcomeMessageEditor
+                    <WelcomeMessageEditorModal
                         isLoading={updateTeamSettings.isLoading}
                         isOwner={isOwner}
                         isOpen={welcomeMessageEditorOpen}
@@ -159,8 +154,6 @@ export default function TeamOnboardingPage() {
                         handleUpdateTeamSettings={handleUpdateTeamSettings}
                         settings={settings?.onboardingSettings?.welcomeMessage}
                     />
-
-                    {/* todo: add a warning if the welcome message is empty */}
 
                     <span className="text-pk-content-secondary text-sm">
                         Here's a preview of the welcome message that will be shown to your organization members:
@@ -174,158 +167,3 @@ export default function TeamOnboardingPage() {
         </OrgSettingsPage>
     );
 }
-
-type WelcomeMessagePreviewProps = {
-    disabled?: boolean;
-    setWelcomeMessageEditorOpen?: (open: boolean) => void;
-};
-export const WelcomeMessagePreview = ({ disabled, setWelcomeMessageEditorOpen }: WelcomeMessagePreviewProps) => {
-    const { data: settings } = useOrgSettingsQuery();
-    const avatarUrl = settings?.onboardingSettings?.welcomeMessage?.featuredMemberResolvedAvatarUrl;
-    const welcomeMessage = settings?.onboardingSettings?.welcomeMessage?.message;
-
-    return (
-        <div className="max-w-2xl mx-auto">
-            <div className="flex justify-between gap-2 items-center">
-                <Heading2 className="py-6">Welcome to Gitpod</Heading2>
-                {setWelcomeMessageEditorOpen && (
-                    <Button variant="secondary" onClick={() => setWelcomeMessageEditorOpen(true)} disabled={disabled}>
-                        Edit
-                    </Button>
-                )}
-            </div>
-            <Subheading>{gitpodWelcomeSubheading}</Subheading>
-            {/* todo: sanitize md */}
-            {welcomeMessage && (
-                <div className="p-8 my-4 bg-pk-surface-secondary text-pk-content-primary rounded-xl flex flex-col gap-5 items-center justify-center">
-                    {avatarUrl && <img src={avatarUrl} alt="" className="w-12 h-12 rounded-full" />}
-                    <MDEditor.Markdown
-                        source={welcomeMessage}
-                        className="md-preview space-y-4 text-center bg-pk-surface-secondary"
-                    />
-                </div>
-            )}
-        </div>
-    );
-};
-
-type WelcomeMessageEditorProps = {
-    settings: OnboardingSettings_WelcomeMessage | undefined;
-    handleUpdateTeamSettings: (
-        newSettings: Partial<PlainMessage<OrganizationSettings>>,
-        options?: { throwMutateError?: boolean },
-    ) => Promise<void>;
-    isLoading: boolean;
-    isOwner: boolean;
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
-};
-const WelcomeMessageEditor = ({
-    handleUpdateTeamSettings,
-    isLoading,
-    isOwner,
-    settings,
-    isOpen,
-    setIsOpen,
-}: WelcomeMessageEditorProps) => {
-    const [message, setMessage] = useState<string | undefined>(settings?.message);
-    const [featuredMemberId, setFeaturedMemberId] = useState<string | undefined>(settings?.featuredMemberId);
-
-    const updateWelcomeMessage = useCallback(
-        async (e: FormEvent) => {
-            e.preventDefault();
-            await handleUpdateTeamSettings({
-                onboardingSettings: {
-                    welcomeMessage: { message, featuredMemberId, enabled: settings?.enabled ?? false },
-                },
-            });
-        },
-        [handleUpdateTeamSettings, message, featuredMemberId, settings?.enabled],
-    );
-
-    return (
-        <Modal onClose={() => setIsOpen(false)} visible={isOpen} containerClassName="min-[576px]:max-w-[650px]">
-            <ModalHeader>Edit welcome message</ModalHeader>
-            <ModalBody>
-                <form id="welcome-message-editor" onSubmit={updateWelcomeMessage} className="space-y-4">
-                    <TextInput readOnly value="Welcome to Gitpod" className="cursor-default"></TextInput>
-                    <Textarea value={gitpodWelcomeSubheading} readOnly className="cursor-default resize-none" />
-                    <div className="w-full flex justify-center">
-                        <OrgMemberInput settings={settings} setFeaturedMemberId={setFeaturedMemberId} />
-                    </div>
-                    <InputField label="Welcome message" error={undefined} className="mb-4" labelHidden>
-                        <Textarea
-                            className="bg-pk-surface-secondary text-pk-content-primary w-full p-4 rounded-xl min-h-[150px]"
-                            value={message}
-                            placeholder="Write a welcome message to your organization members. Markdown formatting is supported."
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                    </InputField>
-                </form>
-            </ModalBody>
-            <ModalFooter>
-                <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                    Cancel
-                </Button>
-                <LoadingButton type="submit" loading={isLoading} disabled={!isOwner} form="welcome-message-editor">
-                    Save
-                </LoadingButton>
-            </ModalFooter>
-        </Modal>
-    );
-};
-
-type OrgMemberSelectProps = {
-    settings: OnboardingSettings_WelcomeMessage | undefined;
-    setFeaturedMemberId: (featuredMemberId: string | undefined) => void;
-};
-const OrgMemberInput = ({ settings, setFeaturedMemberId }: OrgMemberSelectProps) => {
-    const { data: members } = useListOrganizationMembers();
-
-    const [avatarUrl, setAvatarUrl] = useState<string | undefined>(settings?.featuredMemberResolvedAvatarUrl);
-
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger>
-                <div className="flex flex-col justify-center items-center gap-2">
-                    {avatarUrl ? (
-                        <img src={avatarUrl} alt="" className="w-16 h-16 rounded-full" />
-                    ) : (
-                        <div className="w-16 h-16 rounded-full bg-[#EA71DE]" />
-                    )}
-                    <Button variant="secondary" size="sm" type="button">
-                        Change Photo
-                    </Button>
-                </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-                <DropdownMenuItem
-                    key="disabled"
-                    onClick={() => {
-                        setFeaturedMemberId(undefined);
-                        setAvatarUrl(undefined);
-                    }}
-                >
-                    <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded-full bg-pk-surface-tertiary" />
-                        Disable image
-                    </div>
-                </DropdownMenuItem>
-                {members?.map((member) => (
-                    <DropdownMenuItem
-                        key={member.userId}
-                        onClick={() => {
-                            setFeaturedMemberId(member.userId);
-                            setAvatarUrl(member.avatarUrl);
-                        }}
-                    >
-                        <div className="flex items-center gap-2">
-                            <img src={member.avatarUrl} alt={member.fullName} className="w-4 h-4 rounded-full" />
-                            {member.fullName}
-                        </div>
-                    </DropdownMenuItem>
-                ))}
-            </DropdownMenuContent>
-        </DropdownMenu>
-    );
-};
