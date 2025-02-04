@@ -35,7 +35,13 @@ export const WelcomeMessagePreview = ({ disabled, setWelcomeMessageEditorOpen, h
             {welcomeMessage && (
                 <div className="p-8 my-4 bg-pk-surface-secondary text-pk-content-primary rounded-xl flex flex-col gap-5 items-center justify-center">
                     {avatarUrl && <img src={avatarUrl} alt="" className="w-12 h-12 rounded-full" />}
-                    <Markdown className="md-preview space-y-4 text-center bg-pk-surface-secondary">
+                    <Markdown
+                        className="space-y-4 text-center bg-pk-surface-secondary"
+                        components={{
+                            ul: ({ children }) => <ul className="list-disc list-inside">{children}</ul>,
+                            ol: ({ children }) => <ol className="list-decimal list-inside">{children}</ol>,
+                        }}
+                    >
                         {welcomeMessage}
                     </Markdown>
                 </div>

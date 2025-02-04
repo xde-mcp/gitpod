@@ -18,7 +18,11 @@
             window.opener.postMessage(message + "&newUser=" + newUser, `https://${window.location.hostname}`);
 
             if (newUser === "true") {
-                localStorage.setItem("newUserOnboardingPending", newUser);
+                try {
+                    localStorage.setItem("newUserOnboardingPending", newUser);
+                } catch (e) {
+                    console.error("Failed to set localStorage item", e);
+                }
             }
         } else {
             console.log("This page is supposed to be opened by Gitpod.")
