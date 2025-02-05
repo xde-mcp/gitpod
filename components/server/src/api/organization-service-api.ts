@@ -355,19 +355,36 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
         }
 
         if (req.onboardingSettings && Object.keys(req.onboardingSettings).length > 0) {
+            update.onboardingSettings = {};
+
             if (!this.config.isDedicatedInstallation) {
                 throw new ApplicationError(
                     ErrorCodes.BAD_REQUEST,
                     "onboardingSettings can only be set on enterprise installations",
                 );
             }
-            if ((req.onboardingSettings.internalLink?.length ?? 0) > 255) {
-                throw new ApplicationError(ErrorCodes.BAD_REQUEST, "internalLink must be <= 255 characters");
+
+            if (req.onboardingSettings.internalLink) {
+                if (req.onboardingSettings.internalLink.length > 255) {
+                    throw new ApplicationError(ErrorCodes.BAD_REQUEST, "internalLink must be <= 255 characters long");
+                }
+
+                update.onboardingSettings.internalLink = req.onboardingSettings.internalLink;
             }
 
             if (
-                req.onboardingSettings.recommendedRepositories &&
-                req.onboardingSettings.updateRecommendedRepositories
+                !req.onboardingSettings.updateRecommendedRepositories &&
+                req.onboardingSettings.recommendedRepositories.length > 0
+            ) {
+                throw new ApplicationError(
+                    ErrorCodes.BAD_REQUEST,
+                    "recommendedRepositories can only be set when updateRecommendedRepositories is true",
+                );
+            }
+
+            if (
+                req.onboardingSettings.updateRecommendedRepositories &&
+                req.onboardingSettings.recommendedRepositories
             ) {
                 if (req.onboardingSettings.recommendedRepositories.length > 3) {
                     throw new ApplicationError(
@@ -385,6 +402,8 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
                         throw new ApplicationError(ErrorCodes.BAD_REQUEST, `repository ${configurationId} not found`);
                     }
                 }
+
+                update.onboardingSettings.recommendedRepositories = req.onboardingSettings.recommendedRepositories;
             }
 
             if (
@@ -411,9 +430,15 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
                 ) {
                     throw new ApplicationError(ErrorCodes.BAD_REQUEST, "welcomeMessage must not be empty when enabled");
                 }
+
+                update.onboardingSettings.welcomeMessage = req.onboardingSettings.welcomeMessage;
             }
 
-            update.onboardingSettings = req.onboardingSettings;
+            const existingOnboardingSettings = await this.orgService.getSettings(ctxUserId(), req.organizationId);
+            update.onboardingSettings = {
+                ...existingOnboardingSettings.onboardingSettings,
+                ...update.onboardingSettings,
+            };
         }
         if (req.annotateGitCommits !== undefined) {
             update.annotateGitCommits = req.annotateGitCommits;

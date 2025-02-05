@@ -75,12 +75,11 @@ export default function TeamOnboardingPage() {
 
             await handleUpdateTeamSettings({
                 onboardingSettings: {
-                    ...settings?.onboardingSettings,
                     internalLink,
                 },
             });
         },
-        [handleUpdateTeamSettings, internalLink, settings?.onboardingSettings],
+        [handleUpdateTeamSettings, internalLink],
     );
 
     useEffect(() => {
