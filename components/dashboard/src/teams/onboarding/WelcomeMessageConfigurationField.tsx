@@ -4,30 +4,30 @@
  * See License.AGPL.txt in the project root for license information.
  */
 
+import { PlainMessage } from "@bufbuild/protobuf";
+import type { OnboardingSettings_WelcomeMessage } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import { SwitchInputField } from "@podkit/switch/Switch";
 import { Heading3, Subheading } from "@podkit/typography/Headings";
-import { ConfigurationSettingsField } from "../../repositories/detail/ConfigurationSettingsField";
-import { useOrgSettingsQuery } from "../../data/organizations/org-settings-query";
+import { useCallback, useState } from "react";
+import { InputField } from "../../components/forms/InputField";
 import { useToast } from "../../components/toasts/Toasts";
 import { useIsOwner } from "../../data/organizations/members-query";
-import { useUpdateOrgSettingsMutation } from "../../data/organizations/update-org-settings-mutation";
-import { InputField } from "../../components/forms/InputField";
-import { SwitchInputField } from "@podkit/switch/Switch";
+import { useOrgSettingsQuery } from "../../data/organizations/org-settings-query";
+import {
+    UpdateOrganizationSettingsArgs,
+    useUpdateOrgSettingsMutation,
+} from "../../data/organizations/update-org-settings-mutation";
+import { ConfigurationSettingsField } from "../../repositories/detail/ConfigurationSettingsField";
+import { UpdateTeamSettingsOptions } from "../TeamOnboarding";
 import { WelcomeMessageEditorModal } from "./WelcomeMessageEditor";
 import { WelcomeMessagePreview } from "./WelcomeMessagePreview";
-import { useCallback, useState } from "react";
-import type {
-    OnboardingSettings_WelcomeMessage,
-    OrganizationSettings,
-} from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
-import { PlainMessage } from "@bufbuild/protobuf";
-import { UpdateTeamSettingsOptions } from "../TeamOnboarding";
 
 export const gitpodWelcomeSubheading =
     `Gitpod’s sandboxed, ephemeral development environments enable you to use your existing tools without worrying about vulnerabilities impacting their local machines.` as const;
 
 type Props = {
     handleUpdateTeamSettings: (
-        newSettings: Partial<PlainMessage<OrganizationSettings>>,
+        newSettings: UpdateOrganizationSettingsArgs,
         options?: UpdateTeamSettingsOptions,
     ) => Promise<void>;
 };
@@ -48,17 +48,12 @@ export const WelcomeMessageConfigurationField = ({ handleUpdateTeamSettings }: P
                             ...settings?.onboardingSettings?.welcomeMessage,
                             ...newSettings,
                         },
-                        recommendedRepositories: settings?.onboardingSettings?.recommendedRepositories ?? [],
                     },
                 },
                 options,
             );
         },
-        [
-            handleUpdateTeamSettings,
-            settings?.onboardingSettings?.recommendedRepositories,
-            settings?.onboardingSettings?.welcomeMessage,
-        ],
+        [handleUpdateTeamSettings, settings?.onboardingSettings?.welcomeMessage],
     );
 
     return (

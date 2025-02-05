@@ -4,14 +4,11 @@
  * See License.AGPL.txt in the project root for license information.
  */
 
-import { Button } from "@podkit/buttons/Button";
-import { ModalHeader } from "../../components/Modal";
-import { ModalBody } from "../../components/Modal";
-import { ModalFooter } from "../../components/Modal";
-import { Modal } from "../../components/Modal";
-import { useMemo, useCallback, useState, useEffect } from "react";
-import { storageAvailable } from "../../utils";
 import { OrganizationSettings } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import { Button } from "@podkit/buttons/Button";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "../../components/Modal";
+import { storageAvailable } from "../../utils";
 import { WelcomeMessagePreview } from "./WelcomeMessagePreview";
 
 type Props = {

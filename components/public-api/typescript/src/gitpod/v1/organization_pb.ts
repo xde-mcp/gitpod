@@ -324,7 +324,7 @@ export class OnboardingSettings_WelcomeMessage extends Message<OnboardingSetting
   featuredMemberId?: string;
 
   /**
-   * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
+   * featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server
    *
    * @generated from field: optional string featured_member_resolved_avatar_url = 5;
    */
@@ -781,9 +781,9 @@ export class UpdateOrganizationSettingsRequest extends Message<UpdateOrganizatio
   /**
    * onboarding_settings are the settings for the organization's onboarding
    *
-   * @generated from field: optional gitpod.v1.OnboardingSettings onboarding_settings = 16;
+   * @generated from field: optional gitpod.v1.UpdateOrganizationSettingsRequest.OnboardingSettings onboarding_settings = 16;
    */
-  onboardingSettings?: OnboardingSettings;
+  onboardingSettings?: UpdateOrganizationSettingsRequest_OnboardingSettings;
 
   /**
    * annotate_git_commits specifies whether to annotate git commits created in Gitpod workspaces with the gitpod host
@@ -813,7 +813,7 @@ export class UpdateOrganizationSettingsRequest extends Message<UpdateOrganizatio
     { no: 12, name: "role_restrictions", kind: "message", T: RoleRestrictionEntry, repeated: true },
     { no: 13, name: "update_role_restrictions", kind: "scalar", T: 8 /* ScalarType.BOOL */, opt: true },
     { no: 15, name: "max_parallel_running_workspaces", kind: "scalar", T: 5 /* ScalarType.INT32 */, opt: true },
-    { no: 16, name: "onboarding_settings", kind: "message", T: OnboardingSettings, opt: true },
+    { no: 16, name: "onboarding_settings", kind: "message", T: UpdateOrganizationSettingsRequest_OnboardingSettings, opt: true },
     { no: 17, name: "annotate_git_commits", kind: "scalar", T: 8 /* ScalarType.BOOL */, opt: true },
   ]);
 
@@ -831,6 +831,113 @@ export class UpdateOrganizationSettingsRequest extends Message<UpdateOrganizatio
 
   static equals(a: UpdateOrganizationSettingsRequest | PlainMessage<UpdateOrganizationSettingsRequest> | undefined, b: UpdateOrganizationSettingsRequest | PlainMessage<UpdateOrganizationSettingsRequest> | undefined): boolean {
     return proto3.util.equals(UpdateOrganizationSettingsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message gitpod.v1.UpdateOrganizationSettingsRequest.OnboardingSettings
+ */
+export class UpdateOrganizationSettingsRequest_OnboardingSettings extends Message<UpdateOrganizationSettingsRequest_OnboardingSettings> {
+  /**
+   * @generated from field: optional string internal_link = 1;
+   */
+  internalLink?: string;
+
+  /**
+   * update_recommended_repositories specifies whether recommended_repositories should be updated
+   * this is necessary because proto 3 doesn't support optional repeated fields. Will not be specified in server responses.
+   *
+   * @generated from field: optional bool update_recommended_repositories = 2;
+   */
+  updateRecommendedRepositories?: boolean;
+
+  /**
+   * @generated from field: repeated string recommended_repositories = 3;
+   */
+  recommendedRepositories: string[] = [];
+
+  /**
+   * @generated from field: optional gitpod.v1.UpdateOrganizationSettingsRequest.OnboardingSettings.WelcomeMessage welcome_message = 4;
+   */
+  welcomeMessage?: UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage;
+
+  constructor(data?: PartialMessage<UpdateOrganizationSettingsRequest_OnboardingSettings>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "gitpod.v1.UpdateOrganizationSettingsRequest.OnboardingSettings";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "internal_link", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 2, name: "update_recommended_repositories", kind: "scalar", T: 8 /* ScalarType.BOOL */, opt: true },
+    { no: 3, name: "recommended_repositories", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "welcome_message", kind: "message", T: UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage, opt: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateOrganizationSettingsRequest_OnboardingSettings {
+    return new UpdateOrganizationSettingsRequest_OnboardingSettings().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateOrganizationSettingsRequest_OnboardingSettings {
+    return new UpdateOrganizationSettingsRequest_OnboardingSettings().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateOrganizationSettingsRequest_OnboardingSettings {
+    return new UpdateOrganizationSettingsRequest_OnboardingSettings().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateOrganizationSettingsRequest_OnboardingSettings | PlainMessage<UpdateOrganizationSettingsRequest_OnboardingSettings> | undefined, b: UpdateOrganizationSettingsRequest_OnboardingSettings | PlainMessage<UpdateOrganizationSettingsRequest_OnboardingSettings> | undefined): boolean {
+    return proto3.util.equals(UpdateOrganizationSettingsRequest_OnboardingSettings, a, b);
+  }
+}
+
+/**
+ * @generated from message gitpod.v1.UpdateOrganizationSettingsRequest.OnboardingSettings.WelcomeMessage
+ */
+export class UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage extends Message<UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage> {
+  /**
+   * @generated from field: optional bool enabled = 1;
+   */
+  enabled?: boolean;
+
+  /**
+   * @generated from field: optional string message = 2;
+   */
+  message?: string;
+
+  /**
+   * @generated from field: optional string featured_member_id = 3;
+   */
+  featuredMemberId?: string;
+
+  constructor(data?: PartialMessage<UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "gitpod.v1.UpdateOrganizationSettingsRequest.OnboardingSettings.WelcomeMessage";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */, opt: true },
+    { no: 2, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 3, name: "featured_member_id", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage {
+    return new UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage {
+    return new UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage {
+    return new UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage | PlainMessage<UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage> | undefined, b: UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage | PlainMessage<UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage> | undefined): boolean {
+    return proto3.util.equals(UpdateOrganizationSettingsRequest_OnboardingSettings_WelcomeMessage, a, b);
   }
 }
 

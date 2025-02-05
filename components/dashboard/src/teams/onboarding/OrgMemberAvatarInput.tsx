@@ -7,9 +7,9 @@
 import { useState } from "react";
 import { useListOrganizationMembers } from "../../data/organizations/members-query";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@podkit/dropdown/DropDown";
-import { Button } from "@podkit/buttons/Button";
 import type { OnboardingSettings_WelcomeMessage } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import { Button } from "@podkit/buttons/Button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@podkit/dropdown/DropDown";
 
 type Props = {
     settings: OnboardingSettings_WelcomeMessage | undefined;

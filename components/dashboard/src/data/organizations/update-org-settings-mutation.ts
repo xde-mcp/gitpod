@@ -14,21 +14,25 @@ import { useOrgWorkspaceClassesQueryInvalidator } from "./org-workspace-classes-
 import { PlainMessage } from "@bufbuild/protobuf";
 import { useOrgRepoSuggestionsInvalidator } from "./suggested-repositories-query";
 
-type UpdateOrganizationSettingsArgs = Partial<
-    Pick<
-        PlainMessage<OrganizationSettings>,
-        | "workspaceSharingDisabled"
-        | "defaultWorkspaceImage"
-        | "allowedWorkspaceClasses"
-        | "pinnedEditorVersions"
-        | "restrictedEditorNames"
-        | "defaultRole"
-        | "timeoutSettings"
-        | "roleRestrictions"
-        | "maxParallelRunningWorkspaces"
-        | "onboardingSettings"
-        | "annotateGitCommits"
-    >
+export type UpdateOrganizationSettingsArgs = Partial<
+    Omit<
+        Pick<
+            PlainMessage<OrganizationSettings>,
+            | "workspaceSharingDisabled"
+            | "defaultWorkspaceImage"
+            | "allowedWorkspaceClasses"
+            | "pinnedEditorVersions"
+            | "restrictedEditorNames"
+            | "defaultRole"
+            | "timeoutSettings"
+            | "roleRestrictions"
+            | "maxParallelRunningWorkspaces"
+            | "annotateGitCommits"
+        >,
+        never
+    > & {
+        onboardingSettings?: Partial<PlainMessage<OrganizationSettings>["onboardingSettings"]>; // this enables us to not have to specify all of the onboarding settings on every update
+    }
 >;
 
 export const useUpdateOrgSettingsMutation = () => {
@@ -66,7 +70,10 @@ export const useUpdateOrgSettingsMutation = () => {
                 roleRestrictions,
                 updateRoleRestrictions: !!roleRestrictions,
                 maxParallelRunningWorkspaces,
-                onboardingSettings,
+                onboardingSettings: {
+                    ...onboardingSettings,
+                    updateRecommendedRepositories: !!onboardingSettings?.recommendedRepositories,
+                },
                 annotateGitCommits,
             });
             return settings.settings!;

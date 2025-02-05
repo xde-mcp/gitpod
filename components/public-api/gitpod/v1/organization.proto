@@ -59,7 +59,7 @@ message OnboardingSettings {
     // featured_member_id is the ID of the member to show in the welcome message
     optional string featured_member_id = 4;
 
-    // featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server. Do not set this field manually.
+    // featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server
     optional string featured_member_resolved_avatar_url = 5;
   }
 
@@ -169,6 +169,23 @@ message TimeoutSettings {
 }
 
 message UpdateOrganizationSettingsRequest {
+  message OnboardingSettings {
+    message WelcomeMessage {
+      optional bool enabled = 1;
+      optional string message = 2;
+      optional string featured_member_id = 3;
+    }
+
+    optional string internal_link = 1;
+
+    // update_recommended_repositories specifies whether recommended_repositories should be updated
+    // this is necessary because proto 3 doesn't support optional repeated fields. Will not be specified in server responses.
+    optional bool update_recommended_repositories = 2;
+    repeated string recommended_repositories = 3;
+
+    optional WelcomeMessage welcome_message = 4;
+  }
+
   // organization_id is the ID of the organization to update the settings for
   string organization_id = 1;
 

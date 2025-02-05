@@ -365,7 +365,10 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
                 throw new ApplicationError(ErrorCodes.BAD_REQUEST, "internalLink must be <= 255 characters");
             }
 
-            if (req.onboardingSettings.recommendedRepositories) {
+            if (
+                req.onboardingSettings.recommendedRepositories &&
+                req.onboardingSettings.updateRecommendedRepositories
+            ) {
                 if (req.onboardingSettings.recommendedRepositories.length > 3) {
                     throw new ApplicationError(
                         ErrorCodes.BAD_REQUEST,
@@ -384,7 +387,10 @@ export class OrganizationServiceAPI implements ServiceImpl<typeof OrganizationSe
                 }
             }
 
-            if (req.onboardingSettings.welcomeMessage) {
+            if (
+                req.onboardingSettings.welcomeMessage &&
+                Object.keys(req.onboardingSettings.welcomeMessage).length > 0
+            ) {
                 if (req.onboardingSettings.welcomeMessage.featuredMemberId) {
                     const member = await this.orgService
                         .getOrganizationMember(

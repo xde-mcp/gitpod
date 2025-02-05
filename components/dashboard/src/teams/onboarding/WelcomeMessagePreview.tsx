@@ -4,12 +4,11 @@
  * See License.AGPL.txt in the project root for license information.
  */
 
-import { Subheading } from "@podkit/typography/Headings";
-import { Heading2 } from "@podkit/typography/Headings";
 import { Button } from "@podkit/buttons/Button";
-import { useOrgSettingsQuery } from "../../data/organizations/org-settings-query";
-import { gitpodWelcomeSubheading } from "../TeamOnboarding";
+import { Heading2, Subheading } from "@podkit/typography/Headings";
 import Markdown from "react-markdown";
+import { useOrgSettingsQuery } from "../../data/organizations/org-settings-query";
+import { gitpodWelcomeSubheading } from "./WelcomeMessageConfigurationField";
 
 type Props = {
     disabled?: boolean;

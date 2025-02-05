@@ -10,13 +10,13 @@ import { Button } from "@podkit/buttons/Button";
 import { LoadingButton } from "@podkit/buttons/LoadingButton";
 import { Textarea } from "@podkit/forms/TextArea";
 import { FormEvent, useCallback, useState } from "react";
+import Alert from "../../components/Alert";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "../../components/Modal";
 import { InputField } from "../../components/forms/InputField";
 import { TextInput } from "../../components/forms/TextInputField";
+import { UpdateTeamSettingsOptions } from "../TeamOnboarding";
 import { OrgMemberAvatarInput } from "./OrgMemberAvatarInput";
 import { gitpodWelcomeSubheading } from "./WelcomeMessageConfigurationField";
-import { UpdateTeamSettingsOptions } from "../TeamOnboarding";
-import Alert from "../../components/Alert";
 
 type Props = {
     settings: OnboardingSettings_WelcomeMessage | undefined;

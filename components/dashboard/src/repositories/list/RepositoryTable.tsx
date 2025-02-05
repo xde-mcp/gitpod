@@ -69,6 +69,7 @@ export const RepositoryTable: FC<Props> = ({
         await updateTeamSettings.mutateAsync(
             {
                 onboardingSettings: {
+                    ...settings?.onboardingSettings,
                     recommendedRepositories: [...newRepositories],
                 },
             },
