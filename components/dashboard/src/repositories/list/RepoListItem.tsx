@@ -64,7 +64,7 @@ export const RepositoryListItem: FC<Props> = ({ configuration, isSuggested }) =>
                 </div>
             </TableCell>
 
-            <TableCell className="flex items-center gap-4">
+            <TableCell>
                 <LinkButton href={`/repositories/${configuration.id}`} variant="secondary">
                     View
                 </LinkButton>
