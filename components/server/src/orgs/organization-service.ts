@@ -604,7 +604,6 @@ export class OrganizationService {
             }
         }
 
-        log.info({ settings: new TrustedValue(settings) }, "Updating organization settings");
         return this.toSettings(await this.teamDB.setOrgSettings(orgId, settings));
     }
 
