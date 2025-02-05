@@ -48,32 +48,33 @@ message RoleRestrictionEntry {
   repeated OrganizationPermission permissions = 2;
 }
 
-message OnboardingSettings {
-  message WelcomeMessage {
-    // enabled specifies whether the welcome message is enabled
-    bool enabled = 1;
+message OrganizationSettings {
+  // onboarding_settings are the settings for the organization's onboarding
+  message OnboardingSettings {
+    message WelcomeMessage {
+      // enabled specifies whether the welcome message is enabled
+      bool enabled = 1;
 
-    // message is the welcome message for the organization
-    optional string message = 2;
+      // message is the welcome message for the organization
+      optional string message = 2;
 
-    // featured_member_id is the ID of the member to show in the welcome message
-    optional string featured_member_id = 4;
+      // featured_member_id is the ID of the member to show in the welcome message
+      optional string featured_member_id = 4;
 
-    // featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server
-    optional string featured_member_resolved_avatar_url = 5;
+      // featured_member_resolved_avatar_url is the avatar URL that is resolved from the featured_member_id by the server
+      optional string featured_member_resolved_avatar_url = 5;
+    }
+
+    // internal_link is the link to an internal onboarding page for the organization, possibly featuring a custom onboarding guide and other resources
+    optional string internal_link = 1;
+
+    // recommended_repositories are the repositories that are recommended for new org members
+    repeated string recommended_repositories = 2;
+
+    // welcome_message is the welcome message for the organization
+    optional WelcomeMessage welcome_message = 3;
   }
 
-  // internal_link is the link to an internal onboarding page for the organization, possibly featuring a custom onboarding guide and other resources
-  optional string internal_link = 1;
-
-  // recommended_repositories are the repositories that are recommended for new org members
-  repeated string recommended_repositories = 2;
-
-  // welcome_message is the welcome message for the organization
-  optional WelcomeMessage welcome_message = 3;
-}
-
-message OrganizationSettings {
   bool workspace_sharing_disabled = 1;
   string default_workspace_image = 2;
   repeated string allowed_workspace_classes = 3;
@@ -84,6 +85,7 @@ message OrganizationSettings {
   repeated RoleRestrictionEntry role_restrictions = 8;
   // max_parallel_running_workspaces is the maximum number of workspaces that a single user can run in parallel. 0 resets to the default, which depends on the org plan
   int32 max_parallel_running_workspaces = 9;
+  // this is nested under OrganizationSettings because of the differences between the request & response shapes (see `featured_member_resolved_avatar_url` and `update_recommended_repositories`)
   OnboardingSettings onboarding_settings = 10;
   bool annotate_git_commits = 11;
 }
