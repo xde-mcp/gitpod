@@ -15,7 +15,10 @@ import { SwitchInputField } from "@podkit/switch/Switch";
 import { WelcomeMessageEditorModal } from "./WelcomeMessageEditor";
 import { WelcomeMessagePreview } from "./WelcomeMessagePreview";
 import { useCallback, useState } from "react";
-import { OrganizationSettings } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import type {
+    OnboardingSettings_WelcomeMessage,
+    OrganizationSettings,
+} from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
 import { PlainMessage } from "@bufbuild/protobuf";
 
 type Props = {
@@ -32,13 +35,13 @@ export const WelcomeMessageConfigurationField = ({ handleUpdateTeamSettings }: P
 
     const [welcomeMessageEditorOpen, setWelcomeMessageEditorOpen] = useState(false);
 
-    const handleToggleWelcomeMessageEnabled = useCallback(
-        async (enabled: boolean) => {
+    const handleUpdateWelcomeMessage = useCallback(
+        async (newSettings: PlainMessage<OnboardingSettings_WelcomeMessage>) => {
             await handleUpdateTeamSettings({
                 onboardingSettings: {
                     welcomeMessage: {
                         ...settings?.onboardingSettings?.welcomeMessage,
-                        enabled,
+                        ...newSettings,
                     },
                     recommendedRepositories: settings?.onboardingSettings?.recommendedRepositories ?? [],
                 },
@@ -76,7 +79,7 @@ export const WelcomeMessageConfigurationField = ({ handleUpdateTeamSettings }: P
                             }
                         }
 
-                        handleToggleWelcomeMessageEnabled(checked);
+                        handleUpdateWelcomeMessage({ enabled: checked });
                     }}
                     label=""
                 />
@@ -87,7 +90,7 @@ export const WelcomeMessageConfigurationField = ({ handleUpdateTeamSettings }: P
                 isOwner={isOwner}
                 isOpen={welcomeMessageEditorOpen}
                 setIsOpen={setWelcomeMessageEditorOpen}
-                handleUpdateTeamSettings={handleUpdateTeamSettings}
+                handleUpdateWelcomeMessage={handleUpdateWelcomeMessage}
                 settings={settings?.onboardingSettings?.welcomeMessage}
             />
 

@@ -5,10 +5,7 @@
  */
 
 import { PlainMessage } from "@bufbuild/protobuf";
-import {
-    OnboardingSettings_WelcomeMessage,
-    OrganizationSettings,
-} from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import type { OnboardingSettings_WelcomeMessage } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
 import { Textarea } from "@podkit/forms/TextArea";
 import { FormEvent, useCallback, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "../../components/Modal";
@@ -24,10 +21,7 @@ type Props = {
     isLoading: boolean;
     isOwner: boolean;
     isOpen: boolean;
-    handleUpdateTeamSettings: (
-        newSettings: Partial<PlainMessage<OrganizationSettings>>,
-        options?: { throwMutateError?: boolean },
-    ) => Promise<void>;
+    handleUpdateWelcomeMessage: (newSettings: PlainMessage<OnboardingSettings_WelcomeMessage>) => Promise<void>;
     setIsOpen: (isOpen: boolean) => void;
 };
 export const WelcomeMessageEditorModal = ({
@@ -35,7 +29,7 @@ export const WelcomeMessageEditorModal = ({
     isOwner,
     settings,
     isOpen,
-    handleUpdateTeamSettings,
+    handleUpdateWelcomeMessage,
     setIsOpen,
 }: Props) => {
     const [message, setMessage] = useState<string | undefined>(settings?.message);
@@ -44,13 +38,13 @@ export const WelcomeMessageEditorModal = ({
     const updateWelcomeMessage = useCallback(
         async (e: FormEvent) => {
             e.preventDefault();
-            await handleUpdateTeamSettings({
-                onboardingSettings: {
-                    welcomeMessage: { message, featuredMemberId, enabled: settings?.enabled ?? false },
-                },
+            await handleUpdateWelcomeMessage({
+                message,
+                featuredMemberId,
+                enabled: settings?.enabled ?? false,
             });
         },
-        [handleUpdateTeamSettings, message, featuredMemberId, settings?.enabled],
+        [handleUpdateWelcomeMessage, message, featuredMemberId, settings?.enabled],
     );
 
     return (
