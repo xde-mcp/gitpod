@@ -6,22 +6,27 @@
 
 import { PlainMessage } from "@bufbuild/protobuf";
 import type { OnboardingSettings_WelcomeMessage } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
+import { Button } from "@podkit/buttons/Button";
+import { LoadingButton } from "@podkit/buttons/LoadingButton";
 import { Textarea } from "@podkit/forms/TextArea";
 import { FormEvent, useCallback, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "../../components/Modal";
 import { InputField } from "../../components/forms/InputField";
 import { TextInput } from "../../components/forms/TextInputField";
-import { gitpodWelcomeSubheading } from "../TeamOnboarding";
-import { Button } from "@podkit/buttons/Button";
-import { LoadingButton } from "@podkit/buttons/LoadingButton";
 import { OrgMemberAvatarInput } from "./OrgMemberAvatarInput";
+import { gitpodWelcomeSubheading } from "./WelcomeMessageConfigurationField";
+import { UpdateTeamSettingsOptions } from "../TeamOnboarding";
+import Alert from "../../components/Alert";
 
 type Props = {
     settings: OnboardingSettings_WelcomeMessage | undefined;
     isLoading: boolean;
     isOwner: boolean;
     isOpen: boolean;
-    handleUpdateWelcomeMessage: (newSettings: PlainMessage<OnboardingSettings_WelcomeMessage>) => Promise<void>;
+    handleUpdateWelcomeMessage: (
+        newSettings: PlainMessage<OnboardingSettings_WelcomeMessage>,
+        options?: UpdateTeamSettingsOptions,
+    ) => Promise<void>;
     setIsOpen: (isOpen: boolean) => void;
 };
 export const WelcomeMessageEditorModal = ({
@@ -34,17 +39,29 @@ export const WelcomeMessageEditorModal = ({
 }: Props) => {
     const [message, setMessage] = useState<string | undefined>(settings?.message);
     const [featuredMemberId, setFeaturedMemberId] = useState<string | undefined>(settings?.featuredMemberId);
+    const [error, setError] = useState<string | undefined>(undefined);
 
     const updateWelcomeMessage = useCallback(
         async (e: FormEvent) => {
             e.preventDefault();
-            await handleUpdateWelcomeMessage({
-                message,
-                featuredMemberId,
-                enabled: settings?.enabled ?? false,
-            });
+            try {
+                await handleUpdateWelcomeMessage(
+                    {
+                        message,
+                        featuredMemberId,
+                        enabled: settings?.enabled ?? false,
+                    },
+                    {
+                        throwMutateError: true,
+                    },
+                );
+                setIsOpen(false);
+                setError(undefined);
+            } catch (error) {
+                setError(error.message);
+            }
         },
-        [handleUpdateWelcomeMessage, message, featuredMemberId, settings?.enabled],
+        [handleUpdateWelcomeMessage, message, featuredMemberId, settings?.enabled, setIsOpen],
     );
 
     return (
@@ -65,6 +82,12 @@ export const WelcomeMessageEditorModal = ({
                             onChange={(e) => setMessage(e.target.value)}
                         />
                     </InputField>
+
+                    {error && (
+                        <Alert type={"error"} closable={false}>
+                            <p>{error}</p>
+                        </Alert>
+                    )}
                 </form>
             </ModalBody>
             <ModalFooter>

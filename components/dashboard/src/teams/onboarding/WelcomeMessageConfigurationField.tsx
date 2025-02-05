@@ -20,11 +20,15 @@ import type {
     OrganizationSettings,
 } from "@gitpod/public-api/lib/gitpod/v1/organization_pb";
 import { PlainMessage } from "@bufbuild/protobuf";
+import { UpdateTeamSettingsOptions } from "../TeamOnboarding";
+
+export const gitpodWelcomeSubheading =
+    `Gitpod’s sandboxed, ephemeral development environments enable you to use your existing tools without worrying about vulnerabilities impacting their local machines.` as const;
 
 type Props = {
     handleUpdateTeamSettings: (
         newSettings: Partial<PlainMessage<OrganizationSettings>>,
-        options?: { throwMutateError?: boolean },
+        options?: UpdateTeamSettingsOptions,
     ) => Promise<void>;
 };
 export const WelcomeMessageConfigurationField = ({ handleUpdateTeamSettings }: Props) => {
@@ -36,16 +40,19 @@ export const WelcomeMessageConfigurationField = ({ handleUpdateTeamSettings }: P
     const [welcomeMessageEditorOpen, setWelcomeMessageEditorOpen] = useState(false);
 
     const handleUpdateWelcomeMessage = useCallback(
-        async (newSettings: PlainMessage<OnboardingSettings_WelcomeMessage>) => {
-            await handleUpdateTeamSettings({
-                onboardingSettings: {
-                    welcomeMessage: {
-                        ...settings?.onboardingSettings?.welcomeMessage,
-                        ...newSettings,
+        async (newSettings: PlainMessage<OnboardingSettings_WelcomeMessage>, options?: UpdateTeamSettingsOptions) => {
+            await handleUpdateTeamSettings(
+                {
+                    onboardingSettings: {
+                        welcomeMessage: {
+                            ...settings?.onboardingSettings?.welcomeMessage,
+                            ...newSettings,
+                        },
+                        recommendedRepositories: settings?.onboardingSettings?.recommendedRepositories ?? [],
                     },
-                    recommendedRepositories: settings?.onboardingSettings?.recommendedRepositories ?? [],
                 },
-            });
+                options,
+            );
         },
         [
             handleUpdateTeamSettings,

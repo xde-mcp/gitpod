@@ -26,13 +26,14 @@ import { LoadingState } from "@podkit/loading/LoadingState";
 import { Table, TableHeader, TableRow, TableHead, TableBody } from "@podkit/tables/Table";
 import { WelcomeMessageConfigurationField } from "./onboarding/WelcomeMessageConfigurationField";
 
-export const gitpodWelcomeSubheading =
-    `Gitpod’s sandboxed, ephemeral development environments enable you to use your existing tools without worrying about vulnerabilities impacting their local machines.` as const;
+export type UpdateTeamSettingsOptions = {
+    throwMutateError?: boolean;
+};
 
 export default function TeamOnboardingPage() {
     useDocumentTitle("Organization Settings - Onboarding");
     const { toast } = useToast();
-    const org = useCurrentOrg().data;
+    const { data: org } = useCurrentOrg();
     const isOwner = useIsOwner();
 
     const { data: settings } = useOrgSettingsQuery();
@@ -43,7 +44,7 @@ export default function TeamOnboardingPage() {
     const [internalLink, setInternalLink] = useState<string | undefined>(undefined);
 
     const handleUpdateTeamSettings = useCallback(
-        async (newSettings: Partial<PlainMessage<OrganizationSettings>>, options?: { throwMutateError?: boolean }) => {
+        async (newSettings: Partial<PlainMessage<OrganizationSettings>>, options?: UpdateTeamSettingsOptions) => {
             if (!org?.id) {
                 throw new Error("no organization selected");
             }
