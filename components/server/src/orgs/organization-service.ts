@@ -37,7 +37,6 @@ import { CostCenter_BillingStrategy } from "@gitpod/gitpod-protocol/lib/usage";
 import { CreateUserParams, UserAuthentication } from "../user/user-authentication";
 import isURL from "validator/lib/isURL";
 import { DBTeamMembership } from "@gitpod/gitpod-db/lib/typeorm/entity/db-team-membership";
-import { TrustedValue } from "@gitpod/gitpod-protocol/lib/util/scrubbing";
 
 @injectable()
 export class OrganizationService {

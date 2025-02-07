@@ -139,6 +139,7 @@ class TestIamSessionApp {
 
         expect(result.statusCode, JSON.stringify(result.body)).to.equal(200);
         expect(result.body?.userId).to.equal("id-new-user");
+        expect(result.body?.newUser).to.be.true;
         expect(JSON.stringify(result.get("Set-Cookie"))).to.contain(this.cookieName);
     }
 
@@ -152,6 +153,7 @@ class TestIamSessionApp {
 
         expect(result.statusCode, JSON.stringify(result.body)).to.equal(200);
         expect(result.body?.userId).to.equal("id-known-user");
+        expect(result.body?.newUser).to.be.false;
         expect(JSON.stringify(result.get("Set-Cookie"))).to.contain(this.cookieName);
     }
 
